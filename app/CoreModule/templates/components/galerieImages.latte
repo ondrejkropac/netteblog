@@ -1,0 +1,110 @@
+{snippet}
+{*<meta http-equiv="Cache-control" content="no-cache">*}
+    <link rel="stylesheet" href="css/style_drag-drop.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="js/script_drag-drop.js" defer></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<div class = "row">
+<div class = "col" 
+    n:if="$bloggalerieUrl" id="product-images-administration">
+    <div n:for="$i = 0; $i < $imagesCount; $i++">
+        <img src="{$basePath}/images/bloggalerie/galerie_{$bloggalerieUrl}_{$i}.jpg" alt="" /><!--?timestamp={time()}-->
+        
+        <a class="ajax" data-confirm="Opravdu si přejete odstranit vybraný náhled?" n:href="deleteImage! $bloggalerieUrl, $i">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </a>
+        <div id="product-images-switch">
+            {if $i!=0}
+            <a class="ajax" data-confirm="Opravdu si přejete odstranit vybraný snímek?" n:href="switchImage! $bloggalerieUrl, $i">
+                <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+            </a>
+            {/if}
+        </div>
+            <div>
+                <div id="product-images-edit">
+                <a n:href="hideImage! $blogId, $i" data-confirm="Opravdu si přejete skrýt vybraný náhled?"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span></a>
+                </div>
+                <div id="product-images-alt">
+                    <a n:href="descImage! $blogId, $i, $imagealt[$i]" title="Doplnění popisu obrázku pro web"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                </div>
+
+                obr č. {$i+1}
+                {if $imagehide[$i]} 
+                HIDE <i class="fas fa-eye-slash"></i>
+                {/if}
+
+                <br />
+                {if isset($imagealt[$i])} 
+                popis obrázku:<br />
+                {$imagealt[$i]}
+                {else}
+                <br /><br />
+                {/if}
+        </div>
+    </div>
+</div>    
+
+    <div class = "col-auto mr-auto">
+        <ul class="sortable-list">
+        <div n:for="$i = 0; $i < $imagesCount; $i++">
+        <li class="item" draggable="true">
+            <div class="details im{$i}">
+            <img id="img" src="{$basePath}/images/bloggalerie/galerie_{$bloggalerieUrl}_{$i}.jpg" alt="" style="width:64px;height:64px;"/>
+            <span>Kristina Zasiadko</span>
+            </div>
+            <i class="uil uil-draggabledots"></i>
+        </li>
+        </div>
+        </ul>
+    </div>
+</div> 
+
+    {if isset($number) } 
+    <div>
+    <form n:name=imagealtForm class="navbar-right">
+    Popis obrázku číslo {$number}, id galerie: {$blogId}
+                <div class="form-group">
+                    <input n:name=content class="form-control" value="{*$content*}" placeholder="Popis fotografie č.{$number}:{$content}" /> {*$values->number*}
+                </div>
+            <button n:name=send class="btn btn-default">Vložit</button>
+            </form>
+    </div>
+    {/if}
+
+{/snippet}
+
+      <!--li class="item" draggable="true">
+        <div class="details im2">
+          <img id="img" src="images/img-2.jpg">
+          <span>Gabriel Wilson</span>
+        </div>
+        <i class="uil uil-draggabledots"></i>
+      </li>
+      <li class="item" draggable="true">
+        <div class="details im3">
+          <img id="img" src="images/img-3.jpg">
+          <span>Ronelle Cesicon</span>
+        </div>
+        <i class="uil uil-draggabledots"></i>
+      </li>
+      <li class="item" draggable="true">
+        <div class="details im4">
+          <img id="img" src="images/img-4.jpg">
+          <span>James Khosravi</span>
+        </div>
+        <i class="uil uil-draggabledots"></i>
+      </li>
+      <li class="item" draggable="true">
+        <div class="details im5">
+          <img id="img" src="images/img-5.jpg">
+          <span>Annika Hayden</span>
+        </div>
+        <i class="uil uil-draggabledots"></i>
+      </li>
+      <li class="item" draggable="true">
+        <div class="details im6">
+          <img id="img" src="images/img-6.jpg">
+          <span>Donald Horton</span>
+        </div>
+        <i class="uil uil-draggabledots"></i>
+      </li-->

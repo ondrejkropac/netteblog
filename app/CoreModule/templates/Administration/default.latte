@@ -1,0 +1,251 @@
+{block title}Administrace webu{/block}
+{block description}Administrace webu.{/block}
+{block content}
+<div class="row">
+    <div class="col-lg-5 col-md-6">
+        <p>Vítejte v administraci! Jste přihlášeni jako <b>{$username}</b>.</p>
+    </div>
+
+    <div class='col d-flex justify-content-center align-items-start'>
+        <h3>Formulář pro vkládání nápadů na nový obsahu a funkce.</h3>
+    </div>
+<div class="col-xl-1"></div>
+</div>
+<div class="col-xl-11">
+    <div class="row pb-4 d-flex justify-content-between">
+        <div class="col-lg-5 col-md-6">
+            <div class="row">
+                <div class="col-md">
+                    <div class="card rozek wrapper_tag">
+                        <div class="card-body">
+                            <h4 class="card-title">Běžící úkoly</h4>
+                            <p class="card-text">Vstupte do redakce - nápady na články.</p>
+                            <a n:href="Clanek:last" class="btn btn-primary" title="Administrace příspěvků"><i class="fas fa-plane"></i>Kompletní rozhraní redakčního plánu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 py-4 d-none d-xl-block">
+                    <div class="card shadow mb-4"> <!--shadow-->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Redakční přehled</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Název</th>
+                                    <th scope="col">Stav</th>
+                                    <th scope="col">Řešitel</th>
+                                    <!--th scope="col">Datum</th>
+                                    <th scope="col">Akce</th-->
+                                    <th scope="col">Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                {foreach $redactions as $redaction}
+                                    <td>
+                                        {$redaction['redakce_id']}
+                                    </td>
+                                    <td>
+                                        {$redaction['nazev']}
+                                    </td>
+                                    <td>
+                                        {$redaction['stav']}
+                                    </td>
+                                    <td>
+                                        {$redaction['resitel']}
+                                    </td>
+                                    <!--td>
+                                        {date_format(($redaction['datum']), 'Y-m-d')}
+                                    </td>
+                                    <td>
+                                        {if ($redaction['stav'] == "wish")}
+                                        <span class="btn btn-xl btn-outline-info {*disabled*}" title="priorita"><i class="fas fa-brain"></i></span>{/if}
+
+                                        {*if ((!($redaction['stav']))||($redaction['stav'] == "stop"))}
+                                            <a n:href="inwork! $redaction->redakce_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                                        {elseif ($redaction['stav'] == "iw")}
+                                            <a n:href="i nwork! $redaction->redakce_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                            <a n:href="f inal! $redaction->redakce_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                                        {/if*}
+                                        {if ($redaction['stav'] == 'done')} <span class="btn btn-xl btn-outline-info {*disabled*}" title="HOTOVO"><i class="fas fa-thumbs-up"></i></span>{/if}
+                                    </td-->
+                                    <td>
+                                        <a n:href="Redaction:redactionEditor $redaction->redakce_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-block d-xl-none">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Redaction přehled</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Jméno autora</th>
+                                    <th scope="col">Název</th>
+                                    <th scope="col">Akce</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                {foreach $redactions as $redaction}
+                                    <td>
+                                        {$redaction['resitel']}
+                                    </td>
+                                    <td>
+                                        {$redaction['nazev']}
+                                    </td>
+                                    <td>
+                                        <a n:href="Redaction:redactionEditor $redaction->redakce_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                                        {*if ((!($redaction['stav'])) ||  ($redaction['stav'] == "stop"))}
+                                            <a n:href="inwork! $redaction->redakce_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                                        {elseif ($redaction['stav'] == "iw")}
+                                            <a n:href="i nwork! $redaction->redakce_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                            <a n:href="f inal! $redaction->redakce_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                                        {/if*}
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+            <div class="col-md-5 col-lg-7">
+                <div class="row">
+                    <div class='col-10'>
+                        {control editorForm}
+                    </div>
+                    <div class='col-2 d-md-none d-lg-block'>
+                        <p n:if="!$user->isInRole('admin')">Nemáte administrátorská oprávnění, požádejte administrátora webu, aby vám je přidělil.</p>
+                        <h5><a n:href=Clanek:list>Články</a></h5>
+                        <h5><a n:href=Clanek:last>Redakce</a></h5>
+                        <h5><a n:href=Tasker:default>Nápady</a></h5>
+                        <h5><a n:href=Todo:default>Todo přehled</a></h5>
+                        <h5><a n:href=logout>Odhlásit</a></h5>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- ODKAZY NA EDITORY! -->
+
+<div class="container">
+  <div class="row g-2 no-gutters justify-content-between">
+    <div class="col-xl-4 col-md-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Nový článek</h4>
+                <a n:href="Clanek:editor" class="btn btn-success" title="Editor článků"><i class="fas fa-pen"></i>Editor</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Obrázek do galerie</h4>
+                <a n:href="Gallery:manage" class="btn btn-warning" title="Vkládání obrázků na web"><i class="fas fa-image"></i>Obrázky</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Nová galerie</h4>
+                <a n:href="BlogGalerie:manage" class="btn btn-primary" title="Editor blog galerií"><i class="fas fa-highlighter"></i>Bloggal</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Nový odkaz</h4>
+                <a n:href="Online:editor" class="btn btn-primary" title="Vkládání odkazů na web"><i class="fas fa-globe"></i>Web news</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-2 col-sm-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Kalendář</h4>
+                <a n:href="Event:editor" class="btn btn-info" title="Editor kalendáře"><i class="fas fa-calendar"></i>Kalendář</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Běžící úkoly</h4>
+                <a n:href="Todo:editor" class="btn btn-danger" title="Zápis plánovaní"><i class="fas fa-plane"></i>Práce</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Záznam v diáři</h4>
+                <a n:href="Zapisnik:editor" class="btn btn-secondary" title="Editor poznámek"><i class="fas fa-keyboard"></i>Zápisník</a>
+            </div>
+        </div>
+    </div>
+
+    <!--div class="col-xl-2 col-sm-3 p-2 p-lg-4 pb-4 ">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Ankety</h4>
+                <a href="Anketa:editor" class="btn btn-primary" title="Editor dotazníků"><i class="fas fa-list"></i>Anketa</a>
+            </div>
+        </div>
+    </div-->
+
+
+    <div class="col-xl-2 col-sm-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-light">
+                <h4 class="card-title">Profil</h4>
+                <a n:href="Profile:editor" class="btn btn-dark" title="Editor uživatelské karty"><i class="fas fa-address-card"></i>Karta</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-3 p-2 p-lg-4">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body p-3 border bg-secondary">
+                <h4 class="card-title">Rozvoj a nápady</h4>
+                <a n:href="Tasker:editor" class="btn btn-outline-light" title="Poznámky k novému obsahu"><i class="fas fa-clipboard"></i>Nápady</a>
+            </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+    
+        <div class="row pb-4 pl-5">
+            <h4>Editor karty uživatele...</h4>
+            <button type="button" class="btn btn-warning"><a n:href="Profile:editor" title="Editor uživatelské karty"><i class="fas fa-address-card"></i></a></button>
+        </div>
+
+</div>
+{/block}

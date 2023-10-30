@@ -1,0 +1,34 @@
+{block title}Výpis odkazů{/block}
+{block description}Výpis všech článků s odkazem na web.{/block}
+{block content}
+{var $i=1}
+<div class="row pb-4 d-flex justify-content-between">
+    <tr n:foreach="$onlines as $online">
+    	<div class="col-md-4">
+    		<div class="blog-entry ftco-animate">
+            {*if exist online_$i $file else url(images/image_{$i++}.jpg)*}
+            {*<div class="mb-4"><a n:href="Online:detail $online->online_id" class="img img-2" title="{$online->popisek}"  style="background-image: url(images/online/online_{$i++}.jpg)">{$online->titulek}</a>**}
+                
+
+
+            <div class="mb-4">
+            
+                {if !(file_exists("images/online/online_{$online->online_id}.jpg"))} 
+                    {var $ext = 'png'}
+                {else}
+                    {var $ext = 'jpg'}
+                {/if}
+                {* Online:detail $online->online_id*}
+                <a href="{$online['odkaz']}" class="img img-2 d-flex align-items-center" title="{$online['popisek']}" style="background-image: url(images/online/online_{$online->online_id}.{$ext})"></a>
+                <!--a n:href="Online:detail $online->online_id" class="img img-2" title="{$online->popisek}"  style="background-image: url(images/online/online_{$online->online_id}.jpg)">{$online->titulek}</a-->
+            </div>
+            {$online->popisek}
+            {if $user->isInRole('admin')}
+                <br>
+                <a n:href="editor $online->online_id">Editovat</a>
+                <a n:href="remove $online->online_id">Odstranit</a>
+            {/if}
+                    </div>
+                </div>
+    </tr>
+</div>

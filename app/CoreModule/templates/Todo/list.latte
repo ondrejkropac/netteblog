@@ -1,0 +1,153 @@
+{block title}Výpis poznámek{/block}
+{block description}Výpis všech poznámek.{/block}
+{block content}
+
+<title>Týdenní diář</title>
+	<link href="css/style_diar.css" rel="stylesheet">
+
+<li><a n:href=:Core:Todo:default>Pouze výpis Todo</a></li>
+<h1>Diář</h1>
+    <div class="row">
+        <div class ="col">
+            <div>
+                <input type="text" id="nazev" placeholder="Vyplňte název úkolu"><br>
+                <input type="date" id="datum" placeholder="Vyplňte datum"><br>
+                <button id="potvrdit">Potvrdit úkol</button>
+            </div>
+            <div id="seznam-ukolu">
+            </div>
+        </div>
+
+        <div id="seznam-bezicich">
+        </div>
+        <div class = "col-1">
+        </div>
+    
+    </div>
+    
+    <script src="js/Diar.js"></script>
+    <script src="js/Zaznam.js"></script>
+    <script src="js/obsluha.js"></script>
+
+<div class="row">
+    <div class="col-xl-11 col-lg-10 d-none d-sm-block">
+        <div class="card shadow mb-4"> <!--shadow-->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Todo přehled</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Jméno autora</th>
+                        <th scope="col">Název</th>
+                        <th scope="col">Stav</th>
+                        <th scope="col">Akce</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    {foreach $todos as $todo}
+                        <td>
+                            {$todo['todo_id']}
+                        </td>
+                        <td>
+                            {$todo['autor']}
+                        </td>
+                        <td>
+                            {$todo['nazev']}
+                        </td>
+                        <td>
+                            {date_format(($todo['datum']), 'Y-m-d')}
+                        </td>
+                        <td>
+                            {if ((!($todo['stav'])) ||  ($todo['stav'] == "stop"))}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                            {elseif ($todo['stav'] == "iw")}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                <a n:href="final! $todo->todo_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                            {/if}
+                            
+                            {if ($todo['stav'] == 'done')} <span class="btn btn-xl btn-outline-info {*disabled*}" title="HOTOVO"><i class="fas fa-thumbs-up"></i></span>{/if}
+                        </td>
+                        <td>
+                            <a n:href="editor $todo->todo_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                            
+                            {if ($todo['dev'])}
+                                <i class="fas fa-compass"></i>
+                            {else}
+                                <a n:href="dev! $todo->todo_id" class="btn btn-xs btn-danger" onclick="return confirm('Zařadit do vývoje?')" title="Zařazení do vývojej"><i class="fas fa-compass"></i></a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 d-block d-sm-none">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Todo přehled</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Jméno autora</th>
+                        <th scope="col">Název</th>
+                        <th scope="col">Datum</th>
+                        <th scope="col">Akce</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    {foreach $todos as $todo}
+                        <td>
+                            {$todo['autor']}
+                        </td>
+                        <td>
+                            {$todo['nazev']}
+                        </td>
+                        <td>
+                            {$date = date_format(($todo['datum']), 'Y-m-d')}
+                        </td>
+                        <td>
+                            <a n:href="editor $todo->todo_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                            {if ((!($todo['stav'])) ||  ($todo['stav'] == "stop"))}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                            {elseif ($todo['stav'] == "iw")}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                <a n:href="final! $todo->todo_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončitk"><i class="fas fa-check"></i></a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{*}
+{var $i=0}
+<div class="row pb-4 d-flex justify-content-between">
+    <tr n:foreach="$todos as $todo">
+    	<div class="col-md-4">
+    		<div class="blog-entry ftco-animate">
+        {$i++}
+            <div class="mb-4"><a n:href="Todo:detail $todo->todo_id" class="img img-2" title="{$todo->nazev}"  style="background-image: url(images/image_{$i}.jpg)">{$todo->stav}</a>
+            </div>
+            {$todo->stav}
+            {if $user->isInRole('admin')}
+                <br>
+                <a n:href="editor $todo->todo_id">Editovat</a>
+                <a n:href="remove $todo->todo_id">Odstranit</a>
+            {/if}
+                    </div>
+                </div>
+    </tr>
+</div>*}

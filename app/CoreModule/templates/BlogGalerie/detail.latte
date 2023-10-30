@@ -1,0 +1,158 @@
+{* Latte template *}
+
+{block title}Fotogalerie{/block}
+{block description}Výpis samostatné galerie.{/block}
+{block content}     
+<link href="vendor\bootstrap-icons/bootstrap-icons.css" rel="stylesheet">       
+<div class="row">
+<h1 class="my-4">{$bloggalerie->titulek}</h1>
+            <div class="col d-flex justify-content-end align-items-center">
+                <a n:href="BlogGalerie:grid $bloggalerie->bloggal_id" class="btn btn-lg btn-info" onclick="return confirm('Změnit zobrazení?')" title="GRID zobrazení">Zobrazení <i class="bi bi-columns-gap"></i></a>
+            </div>
+        </div>
+
+<!-- Blog Post -->
+<div class="col-xl-11">
+    <div class="card mb-4">
+        <div class="card-footer text-muted">
+            Obrázků: {$bloggalerie->imagesCount}
+        </div>
+        {*var $file = ({$basePath}/images/bloggalerie/{$bloggalerie->url}_thumb.jpg")*}
+        {var $file = ('images/bloggalerie/'.$bloggalerie->url.'_thumb.png')}
+        {if !(file_exists($file))}
+        <img class="card-img-top" src="{$basePath}/images/bloggalerie/galerie_{$bloggalerie->url}_0.jpg" alt="{$bloggalerie->titulek}" height= 300 px>{*no ne to stylování dotáhni!!!*}
+        {else}
+        <img class="card-img-top" src="{$file}" alt="{$bloggalerie->titulek}" height= 400 px>
+        {/if}
+
+        <link rel="stylesheet" href="{$basePath}/css/style_grid.css">
+        <div class="row">
+            <div class="containerp">
+                <header>
+                    <div class="row pb-4 d-flex justify-content-around">
+                        <h1>Popis galerie: {$bloggalerie->popisek}</h1>
+                    </div>
+                </header>
+                <!-- galery podle codingnapal -->
+                <div class="bodyw">
+                    <div class="wrapper">
+                        <div class="gallery col align-items-center">
+                            <div class="image" n:for="$i = 0; $i < ($bloggalerie->imagesCount) ; $i++">
+                                <span>
+                                {var $file = 'images/bloggalerie/galerie_' . $bloggalerie->url . '_' . $i . '.jpg'}
+                                <img src="{$file}" alt="{$bloggalerie->popisek}" data-id="{$bloggalerie->bloggal_id}" data-title="{$bloggalerie['titulek']}" >
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preview-box">
+                        <div class="details">
+                            <span class="title">Image <p class="current-img"></p> of <p class="total-img"></p></span>
+                            <span class="icon fas fa-times"></span>
+                        </div>
+                        <div class="image-box">
+                            <div class="slide prev">
+                                <i class="fas fa-angle-left"></i>
+                            </div>
+                            <div class="slide next">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                            <div class="xfull-img">
+                            <img src="{$file}" alt="{$bloggalerie->popisek}" data-id="{$bloggalerie->bloggal_id}" data-title="{$bloggalerie['titulek']}" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shadowbox"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {*if $bloggalerie->has_picture}
+        <img class="card-img-top" src="{$basePath}/images/clanky/{$bloggalerie->bloggal_id}.jpg?{time()}" alt="{$bloggalerie->titulek}">
+    {/if}
+        <div class="card-body">
+            <h2 class="card-title">{$bloggalerie->popisek}</h2>
+            <tr n:for = "$i=0 ; $i < ($bloggalerie->imagesCount) ; $i++ ">
+                <div class="col-md-4">
+                    <div class="blog-entry ftco-animate">
+                    <div class="mb-4"><a n:href="BlogGalerie:detail $bloggalerie->bloggal_id" class="img img-2" title="{$bloggalerie->popisek}"  style="background-image: url({$file = 'images/bloggalerie/galerie_' . $bloggalerie->url . '_' . $i . '.jpg'})">galerie_{$bloggalerie->url}_{$i}.jpg</a>
+                    </div>
+                    </div>
+                </div>
+            </tr>
+        </div>*}
+</div>
+<div class="col-xl-1">
+</div>
+            {*control comments*}
+
+<script>
+    //getting all required elements
+const gallery  = document.querySelectorAll(".image"),
+previewBox = document.querySelector(".preview-box"),
+previewImg = previewBox.querySelector("img"),
+closeIcon = previewBox.querySelector(".icon"),
+currentImg = previewBox.querySelector(".current-img"),
+totalImg = previewBox.querySelector(".total-img"),
+shadow = document.querySelector(".shadowbox");
+window.onload = ()=>{
+    for (let i = 0; i < gallery.length; i++) {
+        totalImg.textContent = gallery.length; //passing total img length to totalImg variable
+        let newIndex = i; //passing i value to newIndex variable
+        let clickedImgIndex; //creating new variable
+        
+        gallery[i].onclick = () =>{
+            clickedImgIndex = i; //passing cliked image index to created variable (clickedImgIndex)
+            function preview(){
+                currentImg.textContent = newIndex + 1; //passing current img index to currentImg varible with adding +1
+                let imageURL = gallery[newIndex].querySelector("img").src; //getting user clicked img url
+                previewImg.src = imageURL; //passing user clicked img url in previewImg src
+            }
+            preview(); //calling above function
+    
+            const prevBtn = document.querySelector(".prev");
+            const nextBtn = document.querySelector(".next");
+            if(newIndex == 0){ //if index value is equal to 0 then hide prevBtn
+                prevBtn.style.display = "none"; 
+            }
+            if(newIndex >= gallery.length - 1){ //if index value is greater and equal to gallery length by -1 then hide nextBtn
+                nextBtn.style.display = "none"; 
+            }
+            prevBtn.onclick = ()=>{ 
+                newIndex--; //decrement index
+                if(newIndex == 0){
+                    preview(); 
+                    prevBtn.style.display = "none"; 
+                }else{
+                    preview();
+                    nextBtn.style.display = "block";
+                } 
+            }
+            nextBtn.onclick = ()=>{ 
+                newIndex++; //increment index
+                if(newIndex >= gallery.length - 1){
+                    preview(); 
+                    nextBtn.style.display = "none";
+                }else{
+                    preview(); 
+                    prevBtn.style.display = "block";
+                }
+            }
+            document.querySelector("body").style.overflow = "hidden";
+            previewBox.classList.add("show"); 
+            shadow.style.display = "block"; 
+            closeIcon.onclick = ()=>{
+                newIndex = clickedImgIndex; //assigning user first clicked img index to newIndex
+                prevBtn.style.display = "block"; 
+                nextBtn.style.display = "block";
+                previewBox.classList.remove("show");
+                shadow.style.display = "none";
+                document.querySelector("body").style.overflow = "scroll";
+            }
+        }
+        
+    } 
+}
+</script>

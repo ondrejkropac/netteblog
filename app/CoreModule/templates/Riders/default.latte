@@ -1,0 +1,32 @@
+{* Latte template *}
+{block title}Výpis riders{/block}
+{block description}Výpis všech gravelistů.{/block}
+{block content}
+<h1 class="my-4">Gravelriders</h1>
+
+<div class="photograhy">
+    <div class="row no-gutters">
+        <div n:for= "$i=0; $i < 18; $i++" class="col-md-2">
+        {if ($agreed[$i] == 1)}
+            <a n:href="Riders:detail $i" class="photography-entry img d-flex justify-content-center align-items-center b-box rounded" title="{$popisek[$i]}" style="background-image: url(images/stics/b_obsah_{$i}.jpg);">
+        {else}
+            <a n:href="Riders:default" class="photography-entry img d-flex justify-content-center align-items-center s-box rounded" title="{$popisek[$i]} - Neposkytl souhlas se zvěřejněním" style="background-image: url(images/stics/b_obsah_{$i}.jpg);">
+        {/if}
+            <div class="overlay"></div>
+                <div class="text text-center">
+					<h3>{$popisek[$i]}</h3>
+					<span>Riders</span>
+				</div>              
+            </a>
+        </div>
+    </div>
+</div>
+<br>
+<div class='col d-flex justify-content-center'>
+        <h3>Formulář pro vkládání nového gravelisty do přehledu.</h3>
+    </div>
+<div class="row">
+    <div class='col d-flex justify-content-center align-items-center'>
+        {control editorForm}
+    </div>
+</div>

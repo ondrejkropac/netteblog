@@ -1,0 +1,64 @@
+{* Latte template *}
+{block title}Fotogalerie{/block}
+{block description}Výpis-list samostatných galerií.{/block}
+{block content}
+<h1 class="my-4">Samostatné galerie</h1>
+<!-- Blog Post -->
+<div n:foreach="$bloggaleries as $bloggalerie" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$bloggalerie->titulek}</h2>
+        <p class="card-text">{$bloggalerie->popisek}</p>
+        <a n:href="BlogGalerie:detail $bloggalerie->bloggal_id" class="btn btn-primary">Celý článek &rarr;</a>
+            <br><br>
+            {if $user->isInRole('admin')}
+                <a n:href="manage $bloggalerie->url">Editovat</a>
+                <a n:href="remove $bloggalerie->url">Odstranit</a>
+            {/if}
+    </div>
+    <div class="card-footer text-muted">
+        Počet obrázků: {$bloggalerie->imagesCount}
+    </div>
+</div>
+
+<link rel="stylesheet" href="{$basePath}/css/style_grid.css">
+<div class="row">
+    <div class="col-xl-11">
+        <div class="containerp">
+            <header>
+                <div class="row pb-4 d-flex justify-content-around">
+                    <h1>Nazev galerie: {$bloggalerie->titulek}</h1>
+                </div>
+            </header>
+            <section>
+                <ul class="image-gallery">
+                    <li n:for="$i = 0; $i < ($bloggalerie->imagesCount) ; $i++">
+                            {$file = 'images/bloggalerie/galerie_' . $bloggalerie->url . '_' . $i . '.jpg'}
+                            <img src="{$file}" alt="{$bloggalerie->popisek}" data-id="{$bloggalerie->bloggal_id}" data-title="{$bloggalerie['titulek']}" ><!--width="300" height="200">  -->
+                            <div class="overlay"><span>Image title</span></div>                                                        
+                        </li>
+                    <div class="popup-image">
+                        <span>&times;</span>
+                        <img src="{$file}" alt="{$bloggalerie['popisek']}" data-id="{$bloggalerie['bloggal_id']}" data-title="{$bloggalerie['titulek']}" >
+                    </div>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <div class="col-xl-1">
+    </div>
+</div>
+
+<script>
+
+document.querySelectorAll('.image-gallery img').forEach(image => {
+	image.onclick = () => {
+		document.querySelector('.popup-image').style.display = 'block';
+		document.querySelector('.popup-image img').src = image.getAttribude('src');
+    };
+});
+
+document.querySelector('.popup-image span').onclick = () => {
+	document.querySelector('.popup-image').style.display = "none";
+}
+</script>

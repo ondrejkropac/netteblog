@@ -1,0 +1,122 @@
+{* Latte template *}
+
+{block content}
+<h1 class="my-4">Poznámka</h1>
+
+<div class="row">
+    <div class="col-xl-10 col-lg-9 d-none d-sm-block">
+        <div class="card shadow mb-4"> <!--shadow-->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Kalendář</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Název</th>
+                        <th scope="col">Datum</th>
+                        <th scope="col">Misto</th>
+                        <th scope="col">Link</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    {foreach $events as $event}
+                        <td>
+                            {$event['event_id']}
+                        </td>
+                        <td>
+                            {$event['titulek']}
+                        </td>
+                        <td>
+                            {date_format(($event['datum_konani']), 'Y-m-d')}
+                        </td>
+                        <td>
+                            {$event['misto']}
+                        </td>
+                        <td>
+                            {if $event['odkaz']}
+                                <a href="{$event['odkaz']}" class="btn btn-xs btn-info" title="/Ultrabikers/ web"><i class="fas fa-globe"></i></a>
+                            {/if}
+                            {*if ((!($event['misto'])) ||  ($event['misto'] == "stop"))}
+                                <a n:href="inwork! $event->event_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                            {elseif ($event['misto'] == "iw")}
+                                <a n:href="inwork! $event->event_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                <a n:href="final! $event->event_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončitk"><i class="fas fa-check"></i></a>
+                            {/if*}
+                        </td>
+                        <td>
+                            <a n:href="editor $event->event_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                            
+                            {*if ($event['dev'])}
+                                <i class="fas fa-compass"></i>
+                            {else}
+                                <a n:href="dev! $event->event_id" class="btn btn-xs btn-danger" onclick="return confirm('Opravdu editovat ?')" title="Zařazení do vývojej"><i class="fas fa-compass"></i></a>
+                            {/if*}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 d-block d-sm-none">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Event přehled</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Jméno autora</th>
+                        <th scope="col">Název</th>
+                        <th scope="col">Link</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    {foreach $events as $event}
+                        <td>
+                            {$event['autor']}
+                        </td>
+                        <td>
+                            {$event['titulek']}
+                        </td>
+                        <td>
+                            <a n:href="editor $event->event_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                            {*if ((!($event['misto'])) ||  ($event['misto'] == "stop"))}
+                                <a n:href="inwork! $event->event_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                            {elseif ($event['misto'] == "iw")}
+                                <a n:href="inwork! $event->event_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                <a n:href="final! $event->event_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončitk"><i class="fas fa-check"></i></a>
+                            {/if*}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog Post
+<div n:foreach="$events as $event" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$event->titulek}</h2>
+        <p class="card-text">{$event->misto}</p>
+        <a n:href="Event:detail $event->event_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+        <br>
+            {if $user->isInRole('admin')}
+                <a n:href="editor $event->event_id">Editovat</a>
+                <a n:href="remove $event->event_id">Odstranit</a>
+            {/if}
+    </div>
+    <div class="card-footer text-muted">
+        Publikováno:
+    </div>
+</div> -->

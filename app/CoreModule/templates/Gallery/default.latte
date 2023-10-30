@@ -1,0 +1,22 @@
+{* Latte template *}
+{block title}Galerie obrázků{/block}
+{block description}Výpis-obrázky na web a k nabídce.{/block}
+{block content}
+<h1 class="my-4">Samostatné galerie</h1>
+
+<!-- Blog Post -->
+<div n:foreach="$galleries as $gallery" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$gallery->titleGalerie}</h2>
+        <p class="card-text">{$gallery->popisGalerie}</p>
+        <a n:href="Gallery:detail $gallery->gallery_id" class="btn btn-primary">Celý článek &rarr;</a>
+            <br><br>
+            {if $user->isInRole('admin')}
+                <a n:href="manage $gallery->gallery_id">Editovat</a>
+                <a n:href="remove $gallery->gallery_id">Odstranit</a>
+            {/if}
+    </div>
+    <div class="card-footer text-muted">
+        Počet obrázků: {$gallery->popisGalerie}
+    </div>
+</div>

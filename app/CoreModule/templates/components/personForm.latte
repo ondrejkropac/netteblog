@@ -1,0 +1,6 @@
+{* Vykreslení formuláře uživatelů. *}
+{ifset $formPath}
+	{include $formPath, form => personForm}
+{else}
+	{control personForm}
+{/ifset}

@@ -1,0 +1,22 @@
+{* Latte template *}
+{block title}Výpis článků{/block}
+{block description}Výpis všech článků.{/block}
+{block content}
+<h1 class="my-4">Z internetu</h1>
+
+<!-- Blog Post -->
+<div n:foreach="$onlines as $online" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$online->titulek}</h2>
+        <p class="card-text">{$online->popisek}</p>
+        <a n:href="Online:detail $online->online_id" class="btn btn-primary">Celý článek &rarr;</a>
+            <br><br>
+            {if $user->isInRole('admin')}
+                <a n:href="editor $online->titulek">Editovat</a>
+                <a n:href="remove $online->titulek">Odstranit</a>
+            {/if}
+    </div>
+    <div class="card-footer text-muted">
+        Web: {$online->web}
+    </div>
+</div>

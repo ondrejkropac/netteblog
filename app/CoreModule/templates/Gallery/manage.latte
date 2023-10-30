@@ -1,0 +1,163 @@
+{block title}Editor{/block}
+{block description}Editor gallery obrázků.{/block}
+{block content}
+        
+        <link rel="stylesheet" href="css/progress/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+	{* Formulář pro editaci. *}
+	<div n:if="$user->isLoggedIn()" class='row'>
+		<div class='card rozek col d-flex justify-content-start'>
+			{include $formPath, form => galerieForm, widget => $galerieImagesWidget}
+		</div>
+		<div class='card rozek col d-flex justify-content-start'>
+			{*control imageUploadForm}
+			{*formPrint imageUploadForm*}
+			<form n:name=imageUploadForm action="php-scripts/upload.php" class=form>
+				<div>
+					<input type="hidden" n:name=gallery_id>
+				</div>
+				<div>
+					<input type="hidden" n:name=imgFullNameGalerie>
+				</div>
+				<div>
+					<label for="files"><i class="fa-solid fa-folder-open"></i>Nahraj obrázek ...</label>
+				</div>
+				<div>
+					<input id="files" type="file" name="picture">
+				</div>
+
+			<!--h1>Upload Form</h1>
+
+            <label for="files"><i class="fa-solid fa-folder-open fa-2x"></i>Select files ...</label>
+            <input id="files" type="file" name="files[]" multiple-->
+
+				<div class="{*card-body*} progress my-0"></div>
+				<div class="containerqq">
+					<div class="circular-progress">
+						<span class="progress-value">0%</span>
+					</div>
+		
+					<span class="text"><!--HTML & CSS--></span>
+				</div>
+
+				<button type="submit" class="mr-auto bg-success text-white">Upload image!</button>
+
+				<div class="result"></div>
+			</form>
+
+		</div>
+		<div class='{*card rozek*} col d-flex justify-content-end align-items-center'>
+		{*if (!(empty($id)))}{/if ... &($gallery['portfolio'])*}
+			<div class="col">
+				{if ((!(empty($gallery['portfolio']))))}
+					<span class="btn btn-warning pull-left">
+						<a n:href=":Core:Gallery:list">Vyjmout z Portfólia lze v přehledu</a> <i class="fas fa-file-powerpoint"></i>
+					</span>
+				{/if}
+				<br>
+				{if ((!(empty($gallery['startPage']))))}
+					<span class="btn btn-lg btn-danger">
+						<a n:href=":Core:Gallery:list">Vyjmout z výběru pro úvodní</a> <i class="fa fa-globe"></i>
+					</span>
+					<br>
+				{/if}
+			
+				{if (!(empty($gallery['startPage'])))}
+				{if ($gallery['startPage'])}
+					Obrázek je vybraný jako úvodní!<br>
+					{if !($gallery['portfolio'])}
+						Zrušte výběr pro vložení do portfolia...
+					{/if}
+				{/if}
+				{else}
+					</div>
+					<br>
+					<div>
+					{control imageuseForm}
+				{/if}
+			</div>
+		</div>
+		<div class='col d-flex justify-content-end'>
+			{if $gallery['imgFullNameGalerie']}<img src="images/gallery/{$gallery['imgFullNameGalerie']}" width="280px" /><!--alt="<?= $gallery['description'] ?>" data-id="<?= $gallery['gallery_id'] ?>"  data-title="<?= $gallery['titleGalerie'] ?>" width="300" height="200"> -->
+			{/if}
+		</div>
+	</div>
+	{*<img src='images/image_{$clanek->clanky_id}.jpg' alt="article" class="rozek" title="Náhled uloženého obrázku" width="280px" />*}
+	
+{/block}
+
+{block scripts}
+	{include parent}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/tinymce.min.js" integrity="sha512-rCSG4Ab3y6N79xYzoaCqt9gMHR0T9US5O5iBuB25LtIQ1Hsv3jKjREwEMeud8q7KRgPtxhmJesa1c9pl6upZvg==" crossorigin="anonymous"></script>	<script type="text/javascript">
+		tinymce.init({
+			selector: 'textarea[name=popisek]',
+			plugins: [
+				'advlist autolink lists link image charmap print preview anchor',
+				'searchreplace visualblocks code fullscreen',
+				'insertdatetime media table contextmenu paste'
+			],
+			toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+			entities: '160,nbsp',
+			entity_encoding: 'raw'
+		});
+	</script>
+
+	
+    <script>
+        // Declare global variables for easy access 
+        const uploadForm = document.querySelector('.form');
+        const filesInput = uploadForm.querySelector('#files');
+
+        // Attach onchange event handler to the files input element
+        filesInput.onchange = () => {
+            // Append all the file names to the label
+            uploadForm.querySelector('label').innerHTML = '';
+            for (let i = 0; i < filesInput.files.length; i++) {
+                uploadForm.querySelector('label').innerHTML += '<span><i class="fa-solid fa-file"></i>' + filesInput.files[i].name + '</span>';
+            }
+        };
+
+        // Attach submit event handler to form
+        uploadForm.onsubmit = event => {
+            event.preventDefault();
+            // Make sure files are selected
+            if (!filesInput.files.length) {
+                uploadForm.querySelector('.result').innerHTML = 'Please select a file!';
+            } else {
+                // Create the form object
+                let uploadFormDate = new FormData(uploadForm);
+                // Initiate the AJAX request
+                let request = new XMLHttpRequest();
+                // Ensure the request method is POST
+                request.open('POST', uploadForm.action);
+                // Attach the progress event handler to the AJAX request
+
+                request.upload.addEventListener('progress', event => {
+                    // Add the current progress to the button
+                    uploadForm.querySelector('button').innerHTML = 'Uploading... ' + '(' + ((event.loaded/event.total)*100).toFixed(2) + '%)';
+                    //uploadForm.querySelector(".container .progress-value").textContent = (Math.round((event.loaded/event.total)*100)).toFixed(2) + '%';
+                    uploadForm.querySelector(".containerqq .circular-progress .progress-value").textContent = (Math.round((event.loaded/event.total)*100)).toFixed(2) + '%';
+                    // Update the progress bar
+                    uploadForm.querySelector('.progress').style.background = 'linear-gradient(to right, #25b350, #25b350 ' + Math.round((event.loaded/event.total)*100) + '%, #e6e8ec ' + Math.round((event.loaded/event.total)*100) + '%)';
+                    //uploadForm.querySelector(".circular-progress").style.background = 'conic-gradient(#7d2ae8 ' + (Math.round((event.loaded/event.total)*100) * 3.6).toFixed(2) + 'deg, #ededed 0deg)';
+                    uploadForm.querySelector(".containerqq .circular-progress").style.background = 'conic-gradient(#7d2ae8 ' + (Math.round((event.loaded/event.total)*100) * 3.6).toFixed(2) + 'deg, #ededed 0deg)';
+                    // Disable the submit button
+                    uploadForm.querySelector('button').disabled = true;
+                });
+                // The following code will execute when the request is complete
+                request.onreadystatechange = () => {
+                    if (request.readyState == 4 && request.status == 200) {
+                        // Output the response message
+                        uploadForm.querySelector('.result').innerHTML = request.responseText;
+                    }
+                };
+                // Execute request
+                request.send(uploadFormDate);
+            }
+        };
+
+    </script>
+
+    <script type="text/javascript" src="{$basePath}/js/nette.ajax.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/image.administration.js"></script>
+{/block}

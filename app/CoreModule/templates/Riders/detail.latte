@@ -1,0 +1,33 @@
+{* Latte template *}
+{block title}Riders{/block}
+{block description}Výpis výrazných gravelistů{/block}
+{block content}
+
+<h1 class="my-4">Blog of riders</h1>
+{*<a n:href="Clanek:detail $prev" class="btn btn-primary" title="{$prevUrl}">&larr; Předchozí článek </a>
+<a n:href="Clanek:detail $next" class="btn btn-primary" title="{$nextUrl}">Další článek &rarr;</a>*}
+<div class="photography">
+    <div class="row">
+        <div class="col-xl-2"><h4>Gravelbiker</h4> </div>
+        <h2>{$popisek[$detail]}</h2>
+    </div>
+    <br />
+    
+	<div class="row no-gutters">  
+        <div class="col-sm-9 detail fluid d-flex justify-content-center">  
+            <img src="images/stics/b_obsah_{$detail}.jpg" >      
+        </div>
+        <div class="col-sm-2">
+            <a n:href="Riders:default" class="photography-entry img d-flex justify-content-center align-items-center rounded" title="Zpět na výpis" style="background-image: url(images/allriders.jpg);">       
+            </a>
+            <div class="text text-center">
+            <span>Rider</span>
+            <h2>{$popisek[$detail]}</h2>
+            {for $i=0; $i < 3; $i++}
+                <span>{$popis[$i]}</span>
+                <h3>{$popisRider[$i]}</h3>
+            {/for}
+            </div>
+        </div>  
+    </div>
+</div>

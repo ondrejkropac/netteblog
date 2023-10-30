@@ -1,0 +1,22 @@
+{block title}Profily uživatelů{/block}
+{block description}Výpis profilů.{/block}
+{block content}
+{var $i=1}
+<div class="row pb-4 d-flex justify-content-between">
+    <tr n:foreach="$profiles as $profile">
+    	<div class="col-md-4">
+    		<div class="blog-entry ftco-animate">
+        {*$i++*}
+            <div class="mb-4"><a n:href="Profile:detail $profile->profile_id" class="img img-2" title="{$profile->role}"  style="background-image: url(images/profile/profilovka_{$i++}.jpg)">
+                <h5 class="text mb-4 a-box" title="Jméno uživatele">{$profile->jmeno}</h5></a>
+            </div>
+            {$profile->lokace}
+            {if $user->isInRole('admin')}
+                <br>
+                <a n:href="editor $profile->profile_id">Editovat</a>
+                <a n:href="remove $profile->profile_id">Odstranit</a>
+            {/if}
+                    </div>
+                </div>
+    </tr>
+</div>

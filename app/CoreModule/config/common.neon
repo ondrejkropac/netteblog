@@ -1,0 +1,114 @@
+#
+# Konfigurační soubor pro CoreModule.
+#
+parameters:
+    #defaultArticleUrl: 'uvod' # URL výchozího článku
+    defaultClanekUrl: 'uvod' # URL výchozího článku
+    contactEmail: 'ondrejkropac@centrum.cz' # Kontaktní email
+    BLOGGAL_IMAGES_PATH: '%wwwDir%/images/bloggalerie/'
+
+    bloggalerie: Core:BlogGalerie
+
+# Register Nittro Latte macros
+latte:
+    macros:
+        #- Nittro\Bridges\NittroLatte\NittroMacros
+
+# Nastavení služeb pro CoreModule.
+services:
+    #- App\CoreModule\Model\ArticleManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\ClanekManager(picturePath: "%wwwDir%/images/clanky") # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\BlogGalerieManager(picturePath: "%wwwDir%/images/bloggalerie") # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\GalleryManager(picturePath: "%wwwDir%/images/gallery") # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\ProfileManager (picturePath: "%wwwDir%/images/profile") # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\OnlineManager(picturePath: "%wwwDir%/images/online") # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\ZapisnikManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\TaskerManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\TodoManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\EventManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\PollManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\RedactionManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\CategoryManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\ImageAltManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\ImageHideManager # Vlastní služba dále přístupná pomocí DI.
+    - App\CoreModule\Model\ReviewManager
+    - App\CoreModule\Model\ServisManager
+    - App\CoreModule\Model\CommentManager
+    - App\CoreModule\Model\ProductImageManager(%BLOGGAL_IMAGES_PATH%)
+    - App\CoreModule\components\IGalerieFormFactory
+    #- App\CoreModule\Presenters\ArticlePresenter(%defaultArticleUrl%) # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\ClanekPresenter(%defaultClanekUrl%) # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\BlogGaleriePresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\ProfilePresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\OnlinePresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\ZapisnikPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\TaskerPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\RidersPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\ListPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\CreatorPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\TodoPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\EventPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\PollPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\RedactionPresenter # Předání nastavení při vytváření služby presenteru.
+    - App\CoreModule\Presenters\CommentPresenter
+    - App\CoreModule\Presenters\ContactPresenter(%contactEmail%)
+
+	# Nastavení služby pro oprávnění uživatelů v rámci CoreModule (ACL).
+    security.authorizator:
+        setup:
+        # Zdroje CoreModule.
+        - addResource(Core:Administration)
+        #- addResource(Core:Article)
+        - addResource(Core:Clanek)
+        - addResource(Core:Redaction)
+        - addResource(Core:BlogGalerie)
+        - addResource(Core:Gallery)
+        - addResource(Core:Profile)
+        - addResource(Core:Online)
+        - addResource(Core:Zapisnik)
+        - addResource(Core:Tasker)
+        - addResource(Core:Riders)
+        - addResource(Core:List)
+        - addResource(Core:Creator)
+        - addResource(Core:Todo)
+        - addResource(Core:Event)
+        - addResource(Core:Poll)
+        - addResource(Core:Comment)
+        - addResource(Core:Contact)
+        # Pravidla přístupu.
+        - allow(guest, Core:Administration, login)
+        - allow(guest, Core:Administration, register)
+        #- allow(guest, Core:Article, default)
+        #- allow(guest, Core:Article, list)
+        - allow(guest, Core:Clanek, default)
+        - allow(guest, Core:Clanek, detail)
+        - allow(guest, Core:Clanek, list)
+        - allow(guest, Core:BlogGalerie, default)
+        - allow(guest, Core:BlogGalerie, detail)
+        - allow(guest, Core:BlogGalerie, grid)
+        - allow(guest, Core:BlogGalerie, list)
+        - allow(guest, Core:Gallery, default)
+        - allow(guest, Core:Gallery, detail)
+        - allow(guest, Core:Gallery, list)
+        - allow(guest, Core:Profile, default)
+        - allow(guest, Core:Profile, list)
+        - allow(guest, Core:Online, default)
+        - allow(guest, Core:Online, list)
+        - allow(guest, Core:Online, detail)
+        - allow(guest, Core:Zapisnik, default)
+        - allow(guest, Core:Zapisnik, list)
+        - allow(guest, Core:Tasker, default)
+        - allow(guest, Core:Tasker, list)
+        - allow(guest, Core:Riders, default)
+        - allow(guest, Core:Riders, detail)
+        - allow(guest, Core:List, default)
+        - allow(guest, Core:Creator, default)
+        - allow(guest, Core:Todo, default)
+        - allow(guest, Core:Todo, list)
+        - allow(guest, Core:Event, default)
+        - allow(guest, Core:Event, detail)
+        - allow(guest, Core:Poll, detail)
+        - allow(guest, Core:Comment, list)
+        - allow(guest, Core:Contact)
+        - allow(member, Core:Administration, default)
+        - allow(member, Core:Administration, logout)

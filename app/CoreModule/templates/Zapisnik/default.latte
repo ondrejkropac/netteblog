@@ -1,0 +1,23 @@
+{* Latte template *}
+
+{block content}
+<h1 class="my-4">Poznámka</h1>
+
+<!-- Blog Post -->
+    <div class= "row">
+<div n:foreach="$zapisky as $zapisek" class="card mb-4">
+        <div class="col card-body">
+            <h2 class="card-titulek">{$zapisek->titulek}</h2>
+            <p class="card-text">{$zapisek->popisek}</p>
+            <a n:href="Zapisnik:detail $zapisek->kroky_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+            <br>
+                {if $user->isInRole('admin')}
+                    <a n:href="editor $zapisek->url">Editovat</a>
+                    <a n:href="remove $zapisek->url">Odstranit</a>
+                {/if}
+        </div>
+        <div class="card-footer text-muted">
+            Publikováno:
+        </div>
+    </div>
+</div>

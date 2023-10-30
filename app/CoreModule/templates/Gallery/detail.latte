@@ -1,0 +1,55 @@
+{* Latte template *}
+{block title}Detail Galerie obrázků{/block}
+{block description}Výpis z galerie na web a k nabídce.{/block}
+{block content}
+<h1 class="my-4">Obrázek {$gallery->titleGalerie}</h1>
+
+<!-- Blog Post -->
+<div class="card mb-4">
+    <img class="card-img-top" src="{$basePath}/images/gallery/{$gallery->imgFullNameGalerie}" alt="{$gallery->titleGalerie}">
+        <div class="card-footer text-muted">
+            Popis: {$gallery->popisGalerie}
+        </div>
+            {*control comments*}
+</div>
+
+<div class="well">
+    <div n:if="$user->isLoggedIn()" class="text-right">
+        <a class="btn btn-outline-success" id="write-review">Napsat recenzi</a>
+    </div>
+
+	{* Formulář pro psaní recenzí. *}
+    {include $formPath, form => reviewForm} {*, widget => $ratingWidget*}
+	<hr />
+
+    <div n:foreach="$reviews as $review" class="row">
+        <div class="col-md-12">
+            {*control rating, $review->rating*}
+            {control review, $review}
+		</div>
+	</div>
+    <hr />
+</div>
+<!-- -->
+{/block}
+
+{block scripts}
+{include parent}
+{*<script src="{$basePath}/js/confirm.js"></script>*}
+<script src="{$basePath}/js/review.form.js"></script>
+{/block}
+
+    {*if $gallery->has_picture}
+        <img class="card-img-top" src="{$basePath}/images/clanky/{$gallery->bloggal_id}.jpg?{time()}" alt="{$gallery->titulek}">
+    {/if
+    <div class="card-body">
+        <h2 class="card-title">{$gallery->popisGalerie}</h2>
+        <tr n:for = "$i=0 ; $i < ($galeries->imagesCount) ; $i++ ">
+            <div class="col-md-4">
+                <div class="blog-entry ftco-animate">
+                <div class="mb-4"><a n:href="Gallery:detail $gallery->galerie_id" class="img img-2" title="{$gallery->popisGalerie}"  style="background-image: url({$file = 'images/gallery/galerie_' . $gallery->id . '_' . $i . '.jpg'})">{$gallery->titleGalerie}</a>
+                </div>
+                </div>
+            </div>
+        </tr>
+    </div>*}

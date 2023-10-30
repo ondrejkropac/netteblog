@@ -1,0 +1,21 @@
+{block title}Výpis poznámek{/block}
+{block description}Výpis všech poznámek.{/block}
+{block content}
+{$i=0}
+<div class="row pb-4 d-flex justify-content-between">
+    <tr n:foreach="$tasks as $task">
+    	<div class="col-md-4">
+    		<div class="blog-entry ftco-animate">
+        {$i++}
+            <div class="mb-4"><a n:href="Tasker:default $task->id" class="img img-2" title="{$task->popisek}"  style="background-image: url(images/image_{$i}.jpg)">{$task->titulek}</a>
+            </div>
+            {$task->popisek}
+            {if $user->isInRole('admin')}
+                <br>
+                <a n:href="editor $task->id">Editovat</a>
+                <a n:href="remove $task->id">Odstranit</a>
+            {/if}
+                    </div>
+                </div>
+    </tr>
+</div>

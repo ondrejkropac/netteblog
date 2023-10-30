@@ -1,0 +1,115 @@
+{block title}Editor{/block}
+{block description}Editor článků.{/block}
+{block content}
+	{* Formulář pro editaci. 
+	<div class="row d-flex align-items-center"> *}
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	
+	<div class="pb-5 d-flex flex-column flex-md-row">
+		{control editorForm}
+		
+		<br>
+		
+		<div>
+
+			<h3>#{if (!(empty($tags)))}{$tags}{/if}</h3>
+			<div class="row">		
+				<div class = "col ml-5 d-flex justify-content-start">
+					{if (!(empty($id)))}
+						<a n:href="Clanek:editor $prevAUrl" class="btn btn-primary" title="{$prevUrl}">&larr; Předch. čl. </a>
+						<a n:href="Clanek:editor $nextAUrl" class="btn btn-primary" title="{$nextUrl}">Další článek &rarr;</a>
+					{/if}
+				</div>
+			</div>
+			<div class="col pb-5">
+				{if $id}<div class="row ml-3"><h2>Náhled index </h2><h3>obrázku</h3></div>
+					<img src="images/image_{$id}.jpg" width="280px" />
+				{/if}
+			</div>
+			<div class="col">
+			{if (!(empty($indexImage)))}
+				{foreach $indexImage as $image}
+						{if (file_exists($image))}
+							<div {*class="col-md-5"*} id="product-images-administration">
+								<div class="ml-4 mb-2 ftco-animate"> {*blog-entry*}
+										<!--a href="#" class="img d-flex justify-content-center align-items-center img-2" title="{$image}" style="background-image: url({$image});">
+										</a-->
+										<!--span class="btn btn-xs btn-warning pull-right">
+											<a n:href="chooseIndexImage! $id, $image"></a> <i class="fas fa-clone"></i>
+										</span-->
+										<img src="{$image}" alt="" />
+											<span >
+												<a n:href="chooseIndexImage! $id, $image" class="btn btn-xs btn-warning">Nastavit jako úvodní <i class="fas fa-globe"></i></a>
+											</span>
+										<!--a class="ajax" data-confirm="Opravdu si přejete zvolit vybraný náhled?" n:href="chooseIndexImage! $id, $image">
+											<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+										</a>
+										<a class="ajax" data-confirm="Opravdu si přejete zvolit vybraný náhled?" n:href="chooseIndexImage! $id, $image">
+											<span class="btn btn-xs btn-warning pull-right">
+												<a n:href="chooseIndexImage! $id, $image">Nastavit jako úvodní</a> <i class="fas fa-trash"></i>
+											</span>
+										</a-->
+								</div>
+							</div>
+						{/if}
+					{/foreach}
+				{/if}
+			</div>
+			
+			<div class="col pt-5">
+				{if $notes}
+					<h3>Stávající poznámka:</h3> {$notes}
+				{/if}
+				{if $autor}<h3><br>Autor: </h2>{$autor}
+				{else}<h5>Přihlášený uživatel: </h5>{$username}
+				{/if}
+			</div>				
+		</div>
+	</div>
+	{if (!(empty($imagesCount)))}
+	<h3>Náhledy obrázků článku</h2>
+        <div class="row pt-4 d-flex justify-content-around">
+		Počet obrázků: {$imagesCount}
+            {for $i=0 ; $i <= ($imagesCount) ; $i++}
+                {var $file = 'images/clanky/clanek_' . $id . '/clanek_' . $url . '_' . $i . '.jpg'}
+				{if (file_exists($file))}
+					<div class="col-lg-2 col-md-4 col-md-5ths">
+						<div class="blog-entry ftco-animate">
+								<!--Odstranit
+									<span class="btn btn-xs btn-warning pull-right">
+										<a n:href="removeImage! $id, $url, $i"></a> <i class="fas fa-trash"></i>
+									</span>
+									<img class="img d-flex justify-content-center align-items-center img-2" title="{$url}/clanek_{$id}_{$i}" src="{$file}" alt="" /-->
+							{*var $file = 'images/clanek_' . $clanek->clanky_id . '/clanek_' . $clanek->clanky_id . '_' . $i . '.jpg'*}	
+								<span class="btn btn-xs btn-danger mb-2 d-flex justify-content-end">
+									<a n:href="removeImage! $id, $url, $i, $imagesCount">Odstranit </a> <i class="fas fa-trash"></i>
+								</span>
+								<a href="clanek/{$id}" class="img d-flex justify-content-center align-items-center img-2" title="{$url}/clanek_{$id}_{$i}" style="background-image: url({$file});">		
+								</a>
+								
+								<!--a n:href="remove $url" onclick="return confirm('Opravdu chcete záznam smazat ?')" >Odstranit</a><i class="fa fa-trash" aria-hidden="true"></i-->
+						</div>
+					</div>
+				{/if}
+            {/for}
+        </div>
+	{/if}
+
+{/block}
+
+{block scripts}
+	{include parent}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/tinymce.min.js" integrity="sha512-rCSG4Ab3y6N79xYzoaCqt9gMHR0T9US5O5iBuB25LtIQ1Hsv3jKjREwEMeud8q7KRgPtxhmJesa1c9pl6upZvg==" crossorigin="anonymous"></script>	<script type="text/javascript">
+		tinymce.init({
+			selector: 'textarea[name=obsah]',
+			plugins: [
+				'advlist autolink lists link image charmap print preview anchor',
+				'searchreplace visualblocks code fullscreen',
+				'insertdatetime media table contextmenu paste'
+			],
+			toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+			entities: '160,nbsp',
+			entity_encoding: 'raw'
+		});
+	</script>
+{/block}

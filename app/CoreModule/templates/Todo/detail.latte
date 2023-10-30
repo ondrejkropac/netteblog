@@ -1,0 +1,17 @@
+{* Latte template *}
+
+{block content}
+
+<h1 class="my-4">{$todo->nazev}</h1>
+
+<!-- Blog Post -->
+<div class="card mb-4">
+        <div class="card-body">
+        <h2 class="card-title">{$todo->stav}</h2>
+        <p class="card-text">{$todo->autor|noescape}</p>
+    </div>
+        <div class="card-footer text-muted">
+        Publikováno: 
+    </div>
+            {*control comments*}
+</div>

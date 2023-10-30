@@ -1,0 +1,387 @@
+{block title}Výpis článků{/block}
+{block description}Výpis všech článků.{/block}
+{block content}
+{var $i=1}
+{if !($filter)}
+<a n:href="approvedClanky!">Schválené články</a>
+<h1>Počet neschválených článků {count($clanky)}</h1>
+{else}
+<a n:href="Clanek:last" class="jumbotron jumbotron-fluid btn btn-primary btn-lg" title="Zápis plánovaní článků">Zpět na Neschválené články</a>
+<hr />
+{/if}
+<div class="row pb-4 d-flex justify-content-between">
+    <div class="col-lg-5 col-md-7">
+        <div class="row">
+            <div class="col-md">
+                <div class="card rozek wrapper_tag">
+                    <div class="card-body">
+                        <h4 class="card-title">Běžící úkoly</h4>
+                        <p class="card-text">Zadávat může kdokoli - nápady na články.</p>
+                        <a n:href="Redaction:redactionEditor" class="btn btn-primary" title="Zápis plánovaní článků"><i class="fas fa-plane"></i>Editor redakčního plánu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 py-4 d-none d-xl-block">
+                <div class="card shadow mb-4"> <!--shadow-->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Redakční přehled</h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Název</th>
+                                <th scope="col">Datum</th>
+                                <th scope="col">Stav</th>
+                                <th scope="col">Řešitel</th>
+                                <th scope="col">Akce</th>
+                                <th scope="col">Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                            {foreach $redactions as $redaction}
+                                <td>
+                                    {$redaction['redakce_id']}
+                                </td>
+                                <td>
+                                    {$redaction['nazev']}
+                                </td>
+                                <td>
+                                    {date_format(($redaction['datum']), 'Y-m-d')}
+                                </td>
+                                <td>
+                                    {$redaction['stav']}
+                                </td>
+                                <td>
+                                    {$redaction['resitel']}
+                                </td>
+                                <td>
+                                    {if ($redaction['stav'] == "wish")}
+                                    <span class="btn btn-xl btn-outline-info {*disabled*}" title="priorita"><i class="fas fa-brain"></i></span>{/if}
+
+                                    {if ((!($redaction['stav']))||($redaction['stav'] == "stop"))}
+                                        <a n:href="inwork! $redaction->redakce_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                                    {elseif ($redaction['stav'] == "iw")}
+                                        <a n:href="inwork! $redaction->redakce_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                        <a n:href="final! $redaction->redakce_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                                    {/if}
+                                    {if ($redaction['stav'] == 'done')} <span class="btn btn-xl btn-outline-info {*disabled*}" title="HOTOVO"><i class="fas fa-thumbs-up"></i></span>{/if}
+                                </td>
+                                <td>
+                                    <a n:href="Redaction:redactionEditor $redaction->redakce_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                                    
+                                    {*if ($redaction['dev'])}
+                                        <i class="fas fa-compass"></i>
+                                    {else}
+                                        <a n:href="dev! $redaction->redakce_id" class="btn btn-xs btn-danger" onclick="return confirm('Opravdu editovat ?')" title="Zařazení do vývojej"><i class="fas fa-compass"></i></a>
+                                    {/if*}
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-block d-xl-none">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Redaction přehled</h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Jméno autora</th>
+                                <th scope="col">Název</th>
+                                <th scope="col">Akce</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                            {foreach $redactions as $redaction}
+                                <td>
+                                    {$redaction['resitel']}
+                                </td>
+                                <td>
+                                    {$redaction['nazev']}
+                                </td>
+                                <td>
+                                    <a n:href="Redaction:redactionEditor $redaction->redakce_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                                    {if ((!($redaction['stav'])) ||  ($redaction['stav'] == "stop"))}
+                                        <a n:href="inwork! $redaction->redakce_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                                    {elseif ($redaction['stav'] == "iw")}
+                                        <a n:href="inwork! $redaction->redakce_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                        <a n:href="final! $redaction->redakce_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                                    {/if}
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Redakční přehled - plánování</h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Jméno autora</th>
+                                <th scope="col">Název</th>
+                                <th scope="col">Akce</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                                {* sekce naplánovaných *}
+                            {foreach $notApprovedClanky as $clanek}
+                                <td>
+                                    {$clanek['autor']}
+                                </td>
+                                <td>
+                                    {$clanek['titulek']}
+                                </td>
+                                <td>
+                                    {if ((!($clanek['approve']))||((date("d-m-Y", strtotime($clanek['publikace'])) ==  '30-11--0001')))}
+                                        <a n:href="Redaction:publishEditor $clanek->url" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Plánovat vydání"><i class="fas fa-wrench"></i></a>
+                                    {/if}
+                                    {if ($clanek['approve'] == "-1")}
+                                        <span class="btn btn-lg btn-warning pull-right {*disabled*}" title="Datum vzdání: {$clanek->publikace}">
+                                            <i class="fas fa-wrench"></i>
+                                        </span>
+                                    {/if}
+                                </td>
+                            </tr>
+                            {/foreach}
+
+                            
+                            {foreach $clanky as $clanek}
+                                <td>
+                                    {$clanek['autor']}
+                                </td>
+                                <td>
+                                    {$clanek['titulek']}
+                                </td>
+                                <td>
+                                    {*if ((!($clanek['stav']))||($clanek['stav'] == "stop"))}
+                                        <a n:href="inwork! $clanek->redakce_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                                    {elseif ($clanek['stav'] == "iw")}
+                                        <a n:href="inwork! $clanek->redakce_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                        <a n:href="final! $clanek->redakce_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                                    {/if
+
+                                    <a n:href="editor $clanek->url" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>*}
+                                    {if ((!($clanek['approve']))||((date("d-m-Y", strtotime($clanek['publikace'])) ==  '30-11--0001')))}
+                                        <a n:href="Redaction:publishEditor $clanek->url" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Plánovat vydání"><i class="fas fa-wrench"></i></a>
+                                    {/if}
+                                    {if ($clanek['approve'] == "-1")}
+                                        <span class="btn btn-lg btn-warning pull-right {*disabled*}">
+                                            <i class="fas fa-wrench"></i>
+                                        </span>
+                                    {/if}
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            {* archyv článků *}
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Archyv článků, obnova, verzování aktuálního s publikaci posledního - plánování</h6>
+                    </div>
+                    <div class="card-body">
+
+
+                        {var $i=0}{var $k=0}
+                        {foreach $clankyArchyveArray as $jedenClanekArchyve}
+                    
+                            {*collapse acordeon
+                            -tlačítkem přepínač
+                            *}
+
+                            <div id="harmonika" role="tablist">
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="hlavicka-{$k}">
+                                        <h5 class="mb-0">
+                                            <a data-toggle="collapse" href="#collapse-{$k}" aria-expanded="true" aria-controls="collapse-{$k}">
+                                                {($jedenClanekArchyve[0])->url}
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse-{$k}" class="collapse show" role="tabpanel" aria-labelledby="hlavicka-{$k++}" data-parent="#harmonika">
+                                        <div class="card-body">
+                                        <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Jméno autora</th>
+                                                    <th scope="col">Název</th>
+                                                    <th scope="col">Akce</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                    {foreach $jedenClanekArchyve as $clanekArchyve}
+                                                        <td>
+                                                            {$clanekArchyve['autor']}
+                                                        </td>
+                                                        <td>
+                                                            {$clanekArchyve['titulek']}
+                                                        </td>
+                                                        <td>
+                                                            {*if ((!($clanek['stav']))||($clanek['stav'] == "stop"))}
+                                                                <a n:href="inwork! $clanek->redakce_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                                                            {elseif ($clanek['stav'] == "iw")}
+                                                                <a n:href="inwork! $clanek->redakce_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                                                <a n:href="final! $clanek->redakce_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                                                            {/if
+
+                                                            <a n:href="editor $clanek->url" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>*}
+                                                            {if ((!($clanekArchyve['approve']))||((date("d-m-Y", strtotime($clanek['publikace'])) ==  '30-11--0001')))}
+                                                                <a n:href="Clanek:editor $clanek->url" class="btn btn-xl btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Zvovu použít"><i class="fas fa-wrench"></i></a>
+                                                            {/if}
+                                                        </td>
+                                                    </tr>
+                                                    {/foreach}
+
+
+                                                </tbody>
+                                            </table>    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {*$akordeon s jedním čl*}
+                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ukazka-collapse{$i}" aria-expanded="false" aria-controls="ukazka-collapse">
+                                    {($jedenClanekArchyve[0])->url}
+                                </button>
+                            </p>
+                            <div class="collapse" id="ukazka-collapse{$i++}">
+                                <div class="card card-body">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Jméno autora</th>
+                                            <th scope="col">Název</th>
+                                            <th scope="col">Akce</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            {foreach $jedenClanekArchyve as $clanekArchyve}
+                                                <td>
+                                                    {$clanekArchyve['autor']}
+                                                </td>
+                                                <td>
+                                                    {$clanekArchyve['titulek']}
+                                                </td>
+                                                <td>
+                                                    {*if ((!($clanek['stav']))||($clanek['stav'] == "stop"))}
+                                                        <a n:href="inwork! $clanek->redakce_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                                                    {elseif ($clanek['stav'] == "iw")}
+                                                        <a n:href="inwork! $clanek->redakce_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                                        <a n:href="final! $clanek->redakce_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                                                    {/if
+
+                                                    <a n:href="editor $clanek->url" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>*}
+                                                    {if ((!($clanekArchyve['approve']))||((date("d-m-Y", strtotime($clanek['publikace'])) ==  '30-11--0001')))}
+                                                        <a n:href="Clanek:editor $clanek->url" class="btn btn-xl btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Zvovu použít"><i class="fas fa-wrench"></i></a>
+                                                    {/if}
+                                                </td>
+                                            </tr>
+                                            {/foreach}
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        
+
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5 col-lg-7">
+        <!--tr n:foreach="$notApprovedClanky as $clanek">
+            <div class="col-md-12 col-lg-4">
+                <div class="blog-entry ftco-animate">
+                    <div class="mb-4"><a n:href="Clanek:detail $clanek['clanky_id']" class="img img-2" title="{$clanek->popisek}"  style="background-image: url(images/image_{$clanek['clanky_id']}.jpg)">{$clanek->titulek}</a>
+                    </div>
+                    {if $clanek->approve}
+                        <span class="btn btn-xs btn-success pull-left">
+                            PUB <i class="fas fa-blog"></i>
+                        </span>
+                    {else}
+                        <span class="btn btn-xs btn-primary pull-left">
+                            BLOCK <i class="fas fa-blog"></i>
+                        </span>
+                    {/if}
+                {$clanek->popisek}
+                {if $user->isInRole('admin')}
+                    <br>
+                    <a n:href="editor $clanek->url">Editovat</a>
+                    <a n:href="remove $clanek->url">Odstranit</a>
+                    
+                    <a n:href="approve! $clanek->url">Schválit</a>
+                {/if}
+                </div>
+            </div>
+        </tr-->
+
+        <tr n:foreach="$clanky as $clanek">
+            <div class="col-md-12 col-lg-4">
+                <div class="blog-entry ftco-animate">
+                {*if (file_exists($file = 'images/news/image_' . $clanek['clanky_id'] . '.jpg'))}
+                    <div class="mb-4"><a n:href="Clanek:default $clanek->url" class="img img-2" title="{$clanek->popisek}"  style="background-image: url($file)">{$clanek->titulek}</a>
+                    </div>
+                {else}
+                {/if*}
+                    <div class="mb-4"><a n:href="Clanek:detail $clanek['clanky_id']" class="img img-2" title="{$clanek->popisek}"  style="background-image: url(images/image_{$clanek['clanky_id']}.jpg)">{$clanek->titulek}</a>
+                    </div>
+                    {if $clanek->approve}
+                        <span class="btn btn-xs btn-success pull-left">
+                            PUB <i class="fas fa-blog"></i>
+                        </span>
+                    {else}
+                        <span class="btn btn-xs btn-primary pull-left">
+                            BLOCK <i class="fas fa-blog"></i>
+                        </span>
+                    {/if}
+                {$clanek->popisek}
+                {if $user->isInRole('admin')}
+                    <br>
+                    <a n:href="editor $clanek->url">Editovat</a>
+                    <a n:href="remove $clanek->url">Odstranit</a>
+                    
+                    <a n:href="approve! $clanek->url">Schválit</a>
+                {/if}
+                        </div>
+                    </div>
+        </tr>
+    </div>
+</div>

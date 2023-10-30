@@ -1,0 +1,147 @@
+{block title}Výpis článků{/block}
+{block description}Výpis všech článků.{/block}
+{block content}
+{var $i=1}{var $j=1}
+
+<div class= "row">
+    <div class="col-3 ml-4 jumbotron mb-4">
+        {if ($actual)}
+            <h3><a n:href="ascendingClanky! $url, $actual">Výpis od prvního</a></h3>
+        {else}
+            <h3><a n:href="ascendingClanky! $url, $actual">Výpis od posledního</a></h3>
+        {/if}
+    </div>
+    {if ($url)}
+        <div class="ml-4 jumbotron mb-4">
+            <h3><a n:href=":Core:Clanek:">Výpis všech</a></h3>  
+        </div>
+    {else}
+    {*    kategorie nemaji filtr na schválené    *}
+        {if $user->isInRole('admin')}
+            <div class="ml-4 jumbotron mb-4">
+                <h3><a n:href="allClanky! $url, $all">
+                    {if (!$all)}Vše
+                    {else}Schválené
+                    {/if}
+                </a></h3>  
+            </div>
+        {else}
+            <div class="col-2">
+            </div>
+        {/if}
+    {/if}
+
+    <div class="col-5 d-flex justify-content-center align-items-center">
+    <div>
+        Oblíbené články:
+        <tr n:foreach="$favourites as $favorit">
+            {if ($j<4)}
+            <br>
+            {$j++}.{$favorit->url}:
+            <a n:href="Clanek:detail $favorit->clanky_id" title="{$favorit->popisek}">{$favorit->titulek}</a>
+            {/if}
+        </tr>
+    </div>
+    </div>
+</div>
+<br />
+{*výpis jednotlivých článků*}
+<div class="row pb-4 d-flex justify-content-between">
+    <tr n:foreach="$clanky as $clanek">
+    	<div class="col-md-4">
+    		<div class="blog-entry ftco-animate">
+        {*$i++
+                <div class="mb-4"><a n:href="Clanek:detail $clanek['clanky_id']" class="img img-2" title="{$clanek->popisek}"  style="background-image: url(images/image_{$i++}.jpg)">{$clanek->titulek}</a>*}
+                <div class="mb-4">
+
+                    {var $file = 'images/news/image_' . $clanek['clanky_id'] . '.jpg'}
+                        {if (!(file_exists($file)))}
+                            <!--obrázek ve složce news nexistuje -->
+                            {var $file = 'images/image_' . $clanek['clanky_id'] . '.jpg'}
+                        {/if}
+
+                    <a n:href="Clanek:detail $clanek['clanky_id']" class="img d-flex justify-content-center align-items-center img-2" title="{$clanek->popisek}"  style="background-image: url({$file})">{*$clanek->titulek*}
+                        <div class="text text-center text-uppercase">
+                            <span>{$clanek['category']}</span>
+                            {var $expirace = strtotime('now') - strtotime("+18 day", strtotime($clanek['publikace']))}
+                            {if ($expirace < 0)}
+                                <span class="badge badge-warning">novinka</span>
+                            {/if}
+                            <h5 class="mb-4 a-box" title="{$clanek['titulek']}">{$clanek['popisek']}</h5>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- popis pod obrázkem... kategorie/název obrázku/titulek ...autor/datum-->
+                <div class="text text-2 pt-2 mt-3">
+                    <div class="row">
+                        <div class="w-100"></div>
+                            <span class="category mb-3 ml-4 d-block"><a href="{$clanek['category']}">{$clanek['category']}</a></span>
+                        <h3 class="mb-3"><a href="clanek/{$clanek['url']}" title="{$clanek['url']}">{$clanek['titulek']}</a></h3>
+                    </div>
+                </div>
+
+                <h4>{$clanek->popisek}</h4>
+
+                <div class="ml-3 info">
+                    {if (!empty($clanek['autor']))}
+                        <span>Autor článku</span>
+
+                        <!-- dateTime->format('d.m.Y')-->
+                        <h5 class="mb-4">{$clanek['autor']}, <span>
+                            {if ((empty($clanek['publikace']))||((date("d-m-Y", strtotime($clanek['publikace'])) ==  '30-11--0001')))} <!-- jak jinak ověřit datum 0000-00-00 -->
+                                uloženo: {date("d-m-Y", strtotime($clanek['save_time']))}
+                            {else}
+                                {date("d-m-Y", strtotime($clanek['publikace']))}
+                            {/if}
+                        </span></h5>
+                    {/if}
+                </div>
+                        {if !$clanek->approve}
+                            <span class="btn btn-lg btn-secondary pull-left">
+                                <i class="fas fa-blog"></i>
+                            </span>
+                        {/if}
+                <div class='row d-flex justify-content-end'>
+                    <div class='col d-flex justify-content-start'>
+                    {if $user->isInRole('admin')}
+                        {if $clanek->approve}
+                            <span class="btn btn-xs btn-outline-primary pull-left">
+                                <a n:href="approve! $clanek->url">Stáhnout</a> <i class="fas fa-blog"></i>
+                            </span>
+                        {else}
+                            <span class="btn btn-xs btn-outline-success pull-left">
+                                <a n:href="approve! $clanek->url">Schválit</a> <i class="fas fa-blog"></i>
+                            </span>
+                        {/if}
+                        <a n:href="editor $clanek->url">Editovat</a>
+                        <a n:href="remove $clanek->url" onclick="return confirm('Opravdu chcete záznam smazat ?')" >Odstranit</a>
+                    {/if}           
+                    </div>
+
+                    <div class="col-3 d-flex justify-content-end">
+                    Views:{$clanek->viewsCount}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </tr>
+</div>
+
+    <div class="blog-entry ftco-animate">
+        <h4>Hystorie článků dle měsíce</h4>
+        <div class= "row">
+            {for $m = 1; $m <= 12; $m++}
+                {if (!empty($poleMesicu[$m]))}
+                    {var $jedenMesic = $poleMesicu[$m]}
+                    <div class="col">
+                        <h3>{$m}</h3>
+                        {foreach $jedenMesic as $jednaUrl}
+                            <h6 class="mb-4 listing"><a href="clanek/{$jednaUrl[1]}" title="{$jednaUrl[0]}" >{$jednaUrl[0]}<i class="fas fa-chevron-right"></i></a></h6>
+                        {/foreach}
+                    </div>
+                {/if}
+            {/for}
+        </div>
+    </div>

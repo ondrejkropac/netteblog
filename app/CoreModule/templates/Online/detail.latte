@@ -1,0 +1,21 @@
+{* Latte template *}
+{block title}Výpis odkazu{/block}
+{block description}Výpis článků z internetu.{/block}
+{block content}
+
+<h1 class="my-4">{$online->titulek}</h1>
+
+<!-- Blog Post -->
+<div class="card mb-4">
+    {*if $online->has_picture}
+        <img class="card-img-top" src="{$basePath}/images/clanky/{$online->clanky_id}.jpg?{time()}" alt="{$online->titulek}">
+    {/if*}
+        <div class="card-body">
+        <h2 class="card-title">{$online->popisek}</h2>
+        <p class="card-text">{$online->obsah|noescape}</p>
+    </div>
+        <div class="card-footer text-muted">
+        Web: {$online->web}
+    </div>
+            {*control comments*}
+</div>

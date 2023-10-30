@@ -1,0 +1,37 @@
+{block title}Editor{/block}
+{block description}Editor článků.{/block}
+{block content}
+	{* Formulář pro editaci. *}
+	{*control editorForm*}
+	{include $formPath, form => blogGalerieForm, widget => $galerieImagesWidget}
+	{*control galerieForm*}
+	{if $bloggalerie['url']}
+		<h2>Náhled úvodního obrázku</h2>
+	<div class="row">
+		<img src="images/bloggalerie/{$bloggalerie['url']}_thumb.png" width="280px" />
+		<h4>How to / užití!</h5> <p>Obrázky je možné přeskupit a uvodní se maže společně s prvním v pořadí</p> <p> na jeho místo poté nastupuje druhý v pořadí! </p>
+	</div>
+	{/if}
+{/block}
+
+{block scripts}
+	{include parent}
+    <script type="text/javascript" src="{$basePath}/js/person.form.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/tinymce.min.js" integrity="sha512-rCSG4Ab3y6N79xYzoaCqt9gMHR0T9US5O5iBuB25LtIQ1Hsv3jKjREwEMeud8q7KRgPtxhmJesa1c9pl6upZvg==" crossorigin="anonymous"></script>	<script type="text/javascript">
+		tinymce.init({
+			selector: 'textarea[name=popisek]',
+			plugins: [
+				'advlist autolink lists link image charmap print preview anchor',
+				'searchreplace visualblocks code fullscreen',
+				'insertdatetime media table contextmenu paste'
+			],
+			toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+			entities: '160,nbsp',
+			entity_encoding: 'raw'
+		});
+	</script>
+
+    <script type="text/javascript" src="{$basePath}/js/nette.ajax.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/image.administration.js"></script>
+{/block}

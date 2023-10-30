@@ -1,0 +1,83 @@
+{block title}Galerie obrázků{/block}
+{block description}Výpis-obrázky na web a k nabídce.{/block}
+{block content}
+{var $i=1}
+
+{if (isset($filter))&($user->isLoggedIn())}
+    <a n:href=:Core:Gallery:list>Zpět -> Gallery</a>
+    <br>
+{elseif $user->isLoggedIn()}
+    <a n:href="Gallery:list portfolio">Pouze Portfólium</a>
+{/if}
+
+<div class="row pb-4 d-flex justify-content-between">
+    <tr n:foreach="$galleries as $gallery">
+    	<div class="col-md-4">
+    		<div class="blog-entry ftco-animate">
+                <div class="mb-4">
+                    <a n:href="Gallery:detail $gallery->gallery_id" class="img img-2 d-flex justify-content-center align-items-center " title="{$gallery->popisGalerie}"  style="background-image: url(images/gallery/{$gallery->imgFullNameGalerie})">
+                        <div class="text text-center text-uppercase">
+                        <span>{*$bloggalerie->category|upper*}</span>
+                        {$gallery->titleGalerie}
+                        <h4 class="mb-4 a-box align-left{*text-align: left/margin-left: auto*}" title="{$gallery->popisGalerie}">{$gallery->popisGalerie|upper}</h4>
+                    </div>
+                    </a>
+                </div>
+                
+                <div class="row d-flex justify-content-between">
+                    <div>
+                    {if $gallery->popisGalerie}
+                    Popis: {$gallery->popisGalerie}
+                    {else}
+                    {/if}
+                    </div>
+                    {if $user->isLoggedIn()}
+                        <div>
+                        {if $gallery->startPage}
+                            <span class="btn btn-lg btn-danger d-flex justify-content-end">
+                                <a n:href="Gallery:list startPage" title="Zobraz pouze úvodní"><i class="fa fa-globe"></i></a>
+                            </span>
+                        {/if}
+                        </div>
+                        <div>
+                        {if $gallery->portfolio}
+                            <span class="btn btn-lg btn-warning d-flex justify-content-end">
+                                <a n:href="Gallery:list portfolio" title="Zobraz pouze portfolio"><i class="fas fa-chalkboard"></i></a>
+                            </span>
+                        {/if}
+                    </div>
+                    {/if}
+                </div>
+                <br>
+                
+                {if $user->isInRole('admin')}
+                {*$gallery->startPage*}
+                        {if $gallery->startPage}
+                            <span class="btn btn-xs btn-outline-danger pull-left">
+                                <a n:href="default! $gallery->gallery_id">Vyjmout z Úvodu</a> <i class="fas fa-globe"></i>
+                            </span>
+                        {elseif $gallery->portfolio}
+                            <span class="btn btn-xs btn-warning pull-left">
+                                <a n:href="portfol! $gallery->gallery_id">Vyjmout z P</a> <i class="fas fa-file-powerpoint"></i>
+                            </span>
+                        {else}
+                            <span class="btn btn-xs btn-success pull-left">
+                                <a n:href="portfol! $gallery->gallery_id">Do portfólia</a> <i class="fas fa-chalkboard"></i>
+                            </span>
+                        {/if}
+                    <a n:href="manage $gallery->gallery_id">Editovat</a>
+                    <a n:href="remove $gallery->gallery_id">Odstranit</a>
+    {if ($gallery->startPage)}
+        <div class="ml-4 jumbotron mb-4">
+            <h3><a n:href="homepage! $gallery->imgFullNameGalerie">Výpis na uvodní homepage</a></h3>  
+        </div>
+    {else}{/if}
+
+                {/if}
+                {* původně selhávající snaha propojit form a výpis prvku galerie - přesunuto do detailu, kde znovu nevyhovuje neschopností načíst stav select boxu pro editaci - oba případy řešitelné??? komponentou?
+                <br><br>
+                    {control imageuseForm*}
+            </div>
+        </div>
+    </tr>
+</div>

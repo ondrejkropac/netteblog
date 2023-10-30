@@ -1,0 +1,21 @@
+{* Latte template *}
+
+{block content}
+<h1 class="my-4">Poznámka</h1>
+
+<!-- Blog Post -->
+<div n:foreach="$tasks as $task" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$task->titulek}</h2>
+        <p class="card-text">{$task->popisek}</p>
+        <a n:href="Tasker:detail $task->tasker_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+        <br>
+            {if $user->isInRole('admin')}
+                <a n:href="editor $task->tasker_id">Editovat</a>
+                <a n:href="remove $task->tasker_id">Odstranit</a>
+            {/if}
+    </div>
+    <div class="card-footer text-muted">
+        Kategorie: {$task->category}
+    </div>
+</div>

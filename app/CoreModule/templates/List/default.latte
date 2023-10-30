@@ -1,0 +1,114 @@
+{* Latte template *}
+
+{block content}
+<h1 class="my-4">Článek</h1>
+
+<div n:foreach="$clanky as $zapisek" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$zapisek->titulek}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$zapisek->popisek}</p>
+                </div>
+                <a n:href="Clanek:detail $zapisek->clanky_id" class="btn btn-primary">Celý článek &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="my-4">Odkaz</h1>
+
+<div n:foreach="$onlines as $zapisek" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$zapisek->titulek}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$zapisek->popisek}</p>
+                </div>
+                <a n:href="Online:detail $zapisek->online_id" class="btn btn-primary">Celý odkaz &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="my-4">Úkol</h1>
+<div n:foreach="$tasks as $zapisek" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$zapisek->titulek}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$zapisek->popisek}</p>
+                </div>
+                <a n:href="Tasker:detail $zapisek->tasker_id" class="btn btn-primary">Celý úkol &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="my-4">Poznámka</h1>
+<div n:foreach="$zapisky as $zapisek" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$zapisek->titulek}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$zapisek->popisek}</p>
+                </div>
+                <a n:href="Zapisnik:detail $zapisek->kroky_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="my-4">Plánovaní práce</h1>
+
+<div n:foreach="$todos as $todo" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$todo->nazev}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$todo->stav}</p>
+                </div>
+                <a n:href="Todo:detail $todo->todo_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="my-4">Kalendář</h1>
+
+<div n:foreach="$events as $event" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$event->titulek}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$event->odkaz}</p>
+                </div>
+                <a n:href="Event:detail $event->event_id" class="btn btn-primary">Celá událost &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>

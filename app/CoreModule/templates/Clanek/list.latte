@@ -1,0 +1,54 @@
+{* Latte template *}
+{block title}Výpis článků{/block}
+{block description}Výpis všech článků.{/block}
+{block content}
+<h1 class="my-4">{$categoryName}</h1>
+
+<a n:href="Clanek:last">NeSchválené články</a>
+<!-- Blog Post -->
+{if (empty($clanky))} <p> d </p>{/if}
+<div n:foreach="$clanky as $clanek" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$clanek->titulek}</h2>
+        <p class="card-text">{$clanek->popisek}
+        <a n:href="Clanek:list $clanek->autor" class="btn btn-sx btn-secondary pull-right" title="Všechny Články autora">Autor článku: {$clanek->autor}</a></p>
+        <div class = "row">
+            <div class = "col">
+                <a n:href="Clanek:detail $clanek->clanky_id" class="btn btn-primary">Celý článek &rarr;</a>
+            </div>
+            <div class = "col">
+                {if $clanek->approve}
+                    <span class="btn btn-lg btn-success pull-right {*disabled*}" title="Schválený článek!">
+                        <i class="fas fa-blog"></i>
+                    </span>
+                {/if}
+            </div>
+            <div class = "col">
+                {if ((!($clanek['approve']))||((date("d-m-Y", strtotime($clanek['publikace'])) ==  '30-11--0001')))}
+                    <a n:href="Redaction:publishEditor $clanek->url" class="btn btn-xl btn-info pull-right" onclick="return confirm('Opravdu editovat ?')" title="Plánovat vydání">Naplánovat<i class="fas fa-wrench"></i></a>
+                {/if}
+                {if $clanek->approve}
+                            <span class="btn btn-xs btn-outline-primary pull-right">
+                                <a n:href="approve! $clanek->url">Stáhnout</a> <i class="fas fa-blog"></i>
+                            </span>
+                        {/if}
+            </div>
+        </div>
+            <br>
+            {if $user->isInRole('admin')}
+                <a n:href="editor $clanek->url">Editovat</a>
+                <a n:href="remove $clanek->url">Odstranit</a>
+            {/if}
+            
+                <span class="btn btn-warning pull-right">
+                    <a n:href="version! $clanek->url">Nová verze</a> <i class="fas fa-blog"></i>
+                </span>
+    </div>
+    <div class="card-footer text-muted">
+        Publikováno: {$clanek->publikace|date:'j. n. Y H:i'} | 
+        Images: {$clanek->imagesCount} | 
+        Galerie: {$clanek->galerie} | 
+        Tags: {$clanek->tags}
+    </div>
+    {*control comments*}
+</div>

@@ -1,0 +1,137 @@
+{* Latte template *}
+
+{block content}
+<h1 class="my-4">Plánovaní práce</h1>
+
+<div n:foreach="$todos as $todo" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$todo->nazev}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$todo->stav}</p>
+                </div>
+                <a n:href="Todo:detail $todo->todo_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-10 col-lg-9 d-none d-sm-block">
+        <div class="card shadow mb-4"> <!--shadow-->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Todo přehled</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Název</th>
+                        <th scope="col">Datum</th>
+                        <th scope="col">Stav</th>
+                        <th scope="col">Akce</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    {foreach $todos as $todo}
+                        <td>
+                            {$todo['todo_id']}
+                        </td>
+                        <td>
+                            {$todo['nazev']}
+                        </td>
+                        <td>
+                            {date_format(($todo['datum']), 'Y-m-d')}
+                        </td>
+                        <td>
+                            {$todo['stav']}
+                        </td>
+                        <td>
+                            {if ((!($todo['stav'])) ||  ($todo['stav'] == "stop"))}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                            {elseif ($todo['stav'] == "iw")}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                <a n:href="final! $todo->todo_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                            {/if}
+                            {if ($todo['stav'] == 'done')} <span class="btn btn-xl btn-outline-info {*disabled*}" title="HOTOVO"><i class="fas fa-thumbs-up"></i></span>{/if}
+                        </td>
+                        <td>
+                            <a n:href="editor $todo->todo_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                            
+                            {if ($todo['dev'])}
+                                <i class="fas fa-compass"></i>
+                            {else}
+                                <a n:href="dev! $todo->todo_id" class="btn btn-xs btn-danger" onclick="return confirm('Opravdu editovat ?')" title="Zařazení do vývojej"><i class="fas fa-compass"></i></a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 d-block d-sm-none">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Todo přehled</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Jméno autora</th>
+                        <th scope="col">Název</th>
+                        <th scope="col">Akce</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    {foreach $todos as $todo}
+                        <td>
+                            {$todo['autor']}
+                        </td>
+                        <td>
+                            {$todo['nazev']}
+                        </td>
+                        <td>
+                            <a n:href="editor $todo->todo_id" class="btn btn-xs btn-primary" onclick="return confirm('Opravdu editovat ?')" title="Upravit článek"><i class="far fa-edit"></i></a>
+                            {if ((!($todo['stav'])) ||  ($todo['stav'] == "stop"))}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xl btn-info" onclick="return confirm('Opravdu editovat ?')" title="Rozpracovat"><i class="fas fa-wrench"></i></a>
+                            {elseif ($todo['stav'] == "iw")}
+                                <a n:href="inwork! $todo->todo_id" class="btn btn-xs btn-warning" onclick="return confirm('Opravdu editovat ?')" title="Pozastavit"><i class="fas fa-wrench"></i></a>
+                                <a n:href="final! $todo->todo_id" class="btn btn-success" onclick="return confirm('Opravdu editovat ?')" title="Dokončit"><i class="fas fa-check"></i></a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog Post -->
+<div n:foreach="$todos as $todo" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$todo->nazev}</h2>
+        <p class="card-text">{$todo->stav}</p>
+        <a n:href="Todo:detail $todo->todo_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+        <br>
+            {if $user->isInRole('admin')}
+                <a n:href="editor $todo->todo_id">Editovat</a>
+                <a n:href="remove $todo->todo_id">Odstranit</a>
+            {/if}
+    </div>
+    <div class="card-footer text-muted">
+        Publikováno:
+    </div>
+</div>

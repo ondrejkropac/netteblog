@@ -1,0 +1,45 @@
+{* Latte template *}
+{block title}Profily uživatelů{/block}
+{block description}Výpis profilů.{/block}
+{block content}
+{*<h1 class="my-4">{$categoryName}</h1>*}
+
+<!-- Blog Post -->
+<div n:foreach="$profiles as $profile" class="card mb-4">
+    <div class="row">
+        <div class="col-3 card-footer text-muted">
+                <h4 class="card-titulek">{$profile->jmeno}</h4>
+        </div>
+        
+        <div class="card-body">
+            <div class="col d-flex">
+                <div cclass="card-text">
+                    {$profile->lokace}
+                </div>
+                <div class="ml-auto">
+                    <p class="card-footer text-muted">
+                    Role: {$profile->role}
+                    </p>
+                </div>
+                <a n:href="Profile:detail $profile->profile_id" class="btn btn-primary">Celý odkaz &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div n:foreach="$profiles as $profile" class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-titulek">{$profile->jmeno}</h2>
+        <p class="card-text">{$profile->lokace}</p>
+        <a n:href="Profile:detail $profile->profile_id" class="btn btn-primary">Celý článek &rarr;</a>
+            <br><br>
+            {if $user->isInRole('admin')}
+                <a n:href="editor $profile->profile_id">Editovat</a>
+                <a n:href="remove $profile->profile_id">Odstranit</a>
+            {/if}
+    </div>
+    <div class="card-footer text-muted">
+        Role: {$profile->role}
+    </div>
+</div>

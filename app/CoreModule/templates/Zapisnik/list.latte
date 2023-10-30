@@ -1,0 +1,40 @@
+{block title}Výpis poznámek{/block}
+{block description}Výpis všech poznámek.{/block}
+{block content}
+
+<h1 class="my-4">Poznámka</h1>
+<div n:foreach="$zapisky as $zapisek" class="card mb-4">
+    <div class="row">
+        <div class="card-footer text-muted">
+                <h4 class="card-titulek">{$zapisek->titulek}</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <p class="card-text">{$zapisek->popisek}</p>
+                </div>
+                <a n:href="Zapisnik:detail $zapisek->kroky_id" class="btn btn-primary">Celá poznámka &rarr;</a>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+{$i=0}
+<div class="row pb-4 d-flex justify-content-between">
+    <tr n:foreach="$zapisky as $zapisek">
+    	<div class="col-md-4">
+    		<div class="blog-entry ftco-animate">
+        {$i++}
+            <div class="mb-4"><a n:href="Zapisnik:default $zapisek->url" class="img img-2" title="{$zapisek->popisek}"  style="background-image: url(images/image_{$i}.jpg)">{$zapisek->titulek}</a>
+            </div>
+            {$zapisek->popisek}
+            {if $user->isInRole('admin')}
+                <br>
+                <a n:href="editor $zapisek->url">Editovat</a>
+                <a n:href="remove $zapisek->url">Odstranit</a>
+            {/if}
+                    </div>
+                </div>
+    </tr>
+</div>

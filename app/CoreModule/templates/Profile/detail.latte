@@ -1,0 +1,28 @@
+{* Latte template *}
+{block title}Profil uživatele{/block}
+{block description}Výpis profilu.{/block}
+{block content}
+
+<h1 class="my-4">{$profile->jmeno}</h1>
+{*<a n:href="Profile:detail $prev" class="btn btn-primary" title="{$prevUrl}">&larr; Předchozí článek </a>
+<a n:href="Profile:detail $next" class="btn btn-primary" title="{$nextUrl}">Další článek &rarr;</a>*}
+
+<!-- Blog Post -->
+<div class="card mb-4">
+    {*if $profile->has_picture}
+        <img class="card-img-top" src="{$basePath}/images/clanky/{$profile->clanky_id}.jpg?{time()}" alt="{$profile->titulek}">
+    {/if*}
+    
+        <img class="card-img-top" src="{$basePath}/images/profile/profilovka_{$profile->profile_id}.jpg?{time()}" alt="{$profile->jmeno}">
+        <div class="card-body">
+        <h2 class="card-title">{$profile->lokace}</h2>
+        <p class="card-text">{$profile->kolo|noescape}</p>
+        <div class= "col-8">
+            <img class="card-img-top" src="{$basePath}/images/profile/bike_{$profile->profile_id}.jpg?{time()}" alt="{$profile->kolo}">
+        </div>
+    </div>
+        <div class="card-footer text-muted">
+        Motivace|Role: {$profile->role}
+    </div>
+            {*control comments*}
+</div>

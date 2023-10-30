@@ -1,0 +1,217 @@
+{* Latte template *}
+{* TŘEBA POZDĚJI... ONLINE KALENDAR KALENDAR jsou bez schválení tak by tam měl být buň návrh nebo pokud není autorem admin nezveřejňovat*}
+{block content}
+<h1 class="my-4">Souhn editorů pro vytváření nového obsahu</h1>
+<div class="row">
+    {*<div class="col-6">
+        <p>Vítejte v kartě pro vytváření nového obsahu, jste přihlášeni jako {$jmeno}<?= ', ' .  $role}</p>
+        { if (!$admin) :}
+            <p>Nemáte administrátorská oprávnění, požádejte administrátora webu, aby vám je přidělil.</p>
+        { endif}
+    </div>
+    <div class="col-4">
+        <div class="card-body"></div>
+    </div>*}
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Nový článek</h4>
+                <p class="card-text">Přidej nový článek</p>
+                <a n:href="Clanek:editor" class="btn btn-primary" title="Editor článků"><i class="fas fa-pen"></i>Editor</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1"></div>
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Nová galerie</h4>
+                <p class="card-text">Galerie obrázků ke zveřejnění</p>
+                <a n:href="BlogGalerie:manage" class="btn btn-primary" title="Editor blog galerií"><i class="fas fa-highlighter"></i>Edit Bloggalerie</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Nový odkaz</h4>
+                <p class="card-text">Sem vlož odkaz na internet.</p>
+                <a n:href="Online:editor" class="btn btn-primary" title="Vkládání odkazů na web"><i class="fas fa-globe"></i>Přidej odkaz!</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Záznam v kalendáři</h4>
+                <p class="card-text">Vlož pozvánku na akci nebo závody.</p>
+                <a n:href="Event:editor" class="btn btn-primary" title="Editor kalendáře"><i class="fas fa-calendar"></i>Kalendář</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1"></div>
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Úkoly a nápady</h4>
+                <p class="card-text">Zapiš práci k pozdějšímu zpracování</p>
+                <a n:href="Tasker:editor" class="btn btn-primary" title="Poznámky k novému obsahu"><i class="fas fa-clipboard"></i>Editor úkolů</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Běžící úkoly</h4>
+                <p class="card-text">Spíš pro admina - okamžité nápady.</p>
+                <a n:href="Todo:editor" class="btn btn-primary" title="Zápis plánovaní"><i class="fas fa-plane"></i>Editor nápadů</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Záznam v diáři</h4>
+                <p class="card-text">Vlož poznámku ať nezapomeneš.</p>
+                <a n:href="Zapisnik:editor" class="btn btn-primary" title="Editor poznámek"><i class="fas fa-keyboard"></i>Zápisník poznámek</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1"></div>
+    <div class="col-md-3">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Obrázek do galerie</h4>
+                <p class="card-text">Samostatné obrázky na jednom místě.</p>
+                <a n:href="Gallery:manage" class="btn btn-primary" title="Vkládání obrázků na web"><i class="fas fa-image"></i>Uložit obrázek</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-md-3 pb-4 ">
+        <div class="card rozek wrapper_tag">
+            <div class="card-body">
+                <h4 class="card-title">Běžící úkoly</h4>
+                <p class="card-text">Správce obsahu a zveřejnění anket.</p>
+                <a href="Anketa:editor" class="btn btn-primary" title="Editor dotazníků"><i class="fas fa-list"></i>Vlož anketu</a>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="row pb-4 pl-5">
+            <h4>Editor karty uživatele...</h4>
+            <button type="button" class="btn btn-warning"><a n:href="Profile:editor" title="Editor uživatelské karty"><i class="fas fa-address-card"></i></a></button>
+        </div>
+        <div class="col-1"></div>
+        <div class="row pl-5">
+            <h4>Budoucí servisní karta...</h4>
+            <button type="button" class="btn btn-secondary"><a href="todoedit" title="Zápis plánovaní">Nějakej servis...<i class="fas fa-wrench"></i></a></button>
+        </div>
+   
+</div>
+
+<div class="col-xl-11">
+
+
+    <div class="mt-4 col-xl-11">
+        <div class="jumbotron">
+            <h1 class="display-3">Výpis článků, onlines a galerií</h1>
+        </div>
+    </div>
+
+    <!-- sekce výpisu posledních článku onlines...-->
+    <div class="row pb-4 d-flex justify-content-between">
+        <div class="col-md-6 col-xl-5">
+            <div class="blog-entry ftco-animate">
+                <div>
+                    <h6>Poslední článek</h6>
+                    <button type="button" class="btn-sm btn-approve btnpositionright"><a href="clanky" title="Výpis všech">Všechny články
+                        </a></button>
+                </div>
+                <a n:href="Clanek:detail $posledni['clanky_id']" class="img img-2 d-flex justify-content-center align-items-center" title="{$posledni['popisek']}" style="background-image: url(images/image_{$posledni['clanky_id']}.jpg)">
+                    <div class="overlay"></div>
+                    <div class="text text-center text-uppercase">
+                        <span>{$posledni['category']}</span>
+                        <h3 class="a-box">{$posledni['popisek']}</h3>
+                    </div>
+                </a>
+                <h3 class="mb-4">{$posledni['titulek']}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-5">
+            <div class="blog-entry ftco-animate">
+                <div>
+                    <h6>Poslední odkaz na web</h6>
+                    <button type="button" class="btn-sm btn-approve justify-content-end btnpositionright"><a href="online" title="Výpis všech">Všechny odkazy
+                        </a></button>
+                </div>
+                {if !(file_exists("images/online/online_{$lastonline->online_id}.jpg"))} 
+                    {var $ext = 'png'}
+                {else}
+                    {var $ext = 'jpg'}
+                {/if}
+                <a href="{$lastonline['odkaz']}" class="img img-2 d-flex align-items-center" title="{$lastonline['popisek']}" style="background-image: url(images/online/online_{$lastonline->online_id}.{$ext})"></a>
+
+                {*var $f} = (images/online/online_{$lastonline['online_id']}.jpg)
+                {if !(file_exists($f))} 
+                <a href="{$lastonline['odkaz']}" class="img img-2 d-flex align-items-center" title="{$lastonline['popisek']}" style="background-image: url(images/online/online_{$lastonline['online_id']}.png)">
+                {else}
+                <a href="{$lastonline['odkaz']}" class="img img-2 d-flex align-items-center" title="{$lastonline['popisek']}" style="background-image: url(images/online/online_{$lastonline['online_id']}.jpg)">
+                {/if*}
+                    <h3 class="mb-4 s-box" title="{$lastonline['popisek']}">{$lastonline['obsah']}</h3>
+                </a>
+                <h3 class="mb-4">{$lastonline['titulek']}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-1">
+    </div>
+</div>
+
+
+<h2>                Počet neschválených článků: {$neschvalene}            </h2>
+{var $i=1}
+    {*<div class="row pb-4 d-flex justify-content-between">
+        <div class="col-md-4 col-xl-3" n:foreach="$clanky as $clanek">
+            <div class="blog-entry ftco-animate">
+                <div class="text text-2 pt-2 mt-3">
+                    <h3 class="mb-4"><a href="Clanek:detail {$clanek->url}" title="{$clanek['url']}">{$clanek['titulek']}</a></h3>
+                </div>
+            </div>
+        </div>
+    </div>*}
+
+    <tr n:foreach="$clanky as $clanek">
+    	<div class="col-md-3">
+    		<div class="blog-entry ftco-animate">
+                <div class="mb-4"><a n:href="Clanek:detail $clanek->clanky_id" class="img img-2" title="{$clanek->popisek}"  style="background-image: url(images/image_{$i++}.jpg)">{$clanek->titulek}</a>
+                </div>
+            </div>
+        </div>
+    </tr>
+
+    <div class="row pb-4 d-flex justify-content-between">
+    <h2>                Bloggalerie:            </h2>
+    </div>
+    <div n:foreach="$bloggaleries as $bloggalerie">
+        <div class="col-md-4 ">
+            <div class="blog-entry ftco-animate">
+                <div class="text text-2 pt-2 mt-3">
+                    <h3 class="mb-3"><a href="Bloggalerie:detail {$bloggalerie->url}" class="img img-2" title="{$bloggalerie['url']}"  style="background-image: url(images/bloggalerie/galerie_{$bloggalerie->url}_0.jpg)">{$bloggalerie['titulek']}</a></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl">
+    </div>
