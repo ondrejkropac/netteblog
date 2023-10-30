@@ -1,0 +1,307 @@
+.containerp {
+    box-sizing: border-box;
+    position: relative;
+    min-height: 100vh;
+    }
+    
+    .containerp .image-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    padding: 10px;
+    }
+    
+    .containerp .image-container .imagep {
+    height: 250px;
+    width: 350px;
+    border: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    }
+    
+    .containerp .image-container .imagep img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: .2s linear;
+    }
+    
+    .containerp .image-container .imagep:hover img{
+    transform: scale(1.1);
+    }
+    
+    .containerp .popup-image {
+        position: fixed;
+        top:0; left:0;
+        background: rgba(0,0,0,.9);
+        height: 100%;
+        width: 100%;
+        z-index: 100;
+        display:none;
+    }
+    
+    .containerp .popup-image .open {
+        pointer-events: all;
+    }
+    
+    .containerp .popup-image span {
+        position: absolute;
+        top:0; right: 10px;
+        font-size: 60px;
+        font-weight: border;
+        cursor: pointer;
+        z-index: 100;
+    }
+    
+    #gallery-modal .modal-img{
+        width: 100%;
+    }
+    
+    .containerp .popup-image img {
+        position: absolute;
+        top:50%; left:50%;
+        transform: translate(-41%, -50%);
+        border-radius: 5px;
+        width: 1150px;
+        object-fit: cover;
+        /*object-fit: contain;*/
+    }
+    
+    @media (max-width:1392px) {
+        .containerp .popup-image img {
+            position: absolute;  
+            width: 865px;
+            transform: translate(-41%, -50%);
+        }
+    }
+    
+    @media (max-width:991.98px) {
+        .containerp .popup-image img {
+            width: 95%;
+            transform: translate(-50%, -50%);
+        }
+    }
+    
+.image-gallery {
+    display: flex;
+    padding: 27px;/*předtím to vztíkalo v pravo*/
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  /*
+    width: calc(100% / 3);
+  */
+
+  .image-gallery > li {
+    flex: 1 1 auto; /* or flex: auto; */
+    height: 300px;
+    list-style-type: none;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .image-gallery::after {
+    content: "";
+    flex-grow: 999;
+  }
+  
+  .image-gallery li img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    border-radius: 5px;
+  }
+  
+  .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(57, 57, 57, 0.502);
+    top: 0;
+    left: 0;
+    transform: scale(0);
+    transition: all 0.2s 0.1s ease-in-out;
+    color: #fff;
+    border-radius: 5px;
+    /* center overlay content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* hover */
+  .image-gallery li:hover .overlay {
+    transform: scale(1);
+  }
+
+  /*popup*/
+
+  /* popupgaleriethre */
+
+.bodyw{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+.wrapper{
+  max-width: 1300px;
+}
+.gallery{
+  display: flex;
+  flex-wrap: wrap;
+}
+.gallery .image{
+  padding: 7px;
+  width: calc(100% / 3);
+}
+.gallery .image span{
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+.gallery .image img{
+  width: 100%;
+  vertical-align: middle;
+  transition: all 0.3s ease;
+}
+.gallery .image:hover img{
+  transform: scale(1.1);
+}
+.preview-box{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-45%, -50%) scale(0.9);
+  background: #fff;
+  max-width: 1150px;
+  width: 100%;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 3px;
+  padding: 0 8px 8px 8px;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+}
+@media(max-width: 1480px){
+  .preview-box{
+    max-width: 950px;
+  }
+}
+@media(max-width: 1200px){
+  .preview-box{
+    max-width: 720px;
+  }
+}
+@media(max-width: 950px){
+  .preview-box{
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+.preview-box.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-45%, -50%) scale(1);
+  transition: all 0.3s ease;
+}
+@media(max-width: 950px){
+  .preview-box.show{
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+.preview-box .details{
+  display: flex;
+  align-items: center;
+  padding: 12px 15px 12px 10px;
+  justify-content: space-between;
+}
+.preview-box .details .title{
+  display: flex;
+  font-size: 18px;
+  font-weight: 400;
+}
+.details .title p{
+  margin: 0 5px;
+}
+.details .title p.current-img{
+  font-weight: 500;
+}
+.details .icon{
+  color: #007bff;
+  font-size: 20px;
+  cursor: pointer;
+}
+.preview-box .image-box{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+/* následující dvě doplněné podle coding nepal vložené do struktury code shack galerie */
+.preview-box .image-box img{  
+  height: 100%;
+  object-fit: contain;
+}
+.image-box .xfull-img {
+  max-height: 96vh;
+  //max-width: 75vw; - to se projeví až od okna 950 px a menšího!
+}
+
+.image-box .slide{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #black;
+  font-size: 30px;
+  cursor: pointer;
+  height: 50px;
+  width: 60px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 3px;
+}
+.slide.prev{
+  left: 0px;
+}
+.slide.next{
+  right: 0px;
+}
+.image-box img{
+  width: 100%;
+  border-radius: 0 0 3px 3px;
+}
+.shadowbox{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  display: none;
+  background: rgba(0,0,0,0.45);
+}
+@media(max-width: 1000px){
+  .gallery .image{
+    width: calc(100% / 2);
+  }
+}
+@media(max-width: 600px){
+  .gallery .image{
+    width: 100%;
+    padding: 4px;
+  }
+}
+.wrapper_tag{
+  width: 496px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px 25px 20px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.06);
+}

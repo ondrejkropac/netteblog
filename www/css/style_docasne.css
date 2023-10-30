@@ -1,0 +1,234 @@
+/*
+body {
+    font-family: verdana, serif;
+    font-size: 14px;
+    width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #444444;
+    text-shadow: 3px 3px 3px #aaaaaa;
+}
+
+footer {
+    font-size: 11px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+article {
+    text-shadow: 3px 3px 3px #aaaaaa;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav li {
+    float: left;
+    margin-right: 15px;
+}
+
+nav a {
+    background: #6FA4F8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: none;
+}
+
+nav a:hover {
+    background: #2976f8;
+    color: #EEEEEE;
+    text-decoration: none;
+}
+*/
+input[type="submit"] {
+    background: #6FA4F8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 0;
+}
+
+input[type="submit"]:hover {
+    background: #2976f8;
+    color: #EEEEEE;
+    cursor: pointer;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #aaaaaa;
+    padding: 0.3em;
+}
+
+input[type="submit"] {
+    padding: 10px 25px;
+    display: block;
+    margin: 20px auto 0;
+    font-weight: bold;
+}
+
+textarea {
+    border-radius: 5px;
+    border: 1px solid #aaaaaa;
+    width: 483px;
+    height: 90px;
+}
+
+.message {
+    border: 1px solid #9DC2F8;
+    background: #DBE8F8;
+    padding: 3px;
+}
+
+#product-images-administration img {
+    width: auto;
+    height: auto;
+    max-width: 128px;
+    max-height: 128px;
+    vertical-align: middle;
+}
+
+#product-images-administration a {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+#product-images-administration > div {
+    display: inline-block;
+    width: 138px;
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 5px;
+    position: relative;
+}
+
+/* Review form */
+#frm-reviewForm {
+    display:none;
+}
+
+#frm-reviewjForm {
+    display:none;
+}
+
+.review-star{
+    cursor: pointer;
+}
+
+.large-icon {
+    font-size: 200%;
+}
+
+#product-images-administration img {
+	width: auto;
+	height: auto;
+	max-width: 128px;
+	max-height: 128px;
+	vertical-align: middle;
+}
+
+#product-images-administration a {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+
+#product-images-administration > div {
+	display: inline-block;
+	width: 138px;
+	text-align: center;
+	border: 1px solid #ccc;
+	padding: 5px;
+	position: relative;
+}
+
+
+
+#product-images-edit a {
+	position: absolute;
+	right: 5px;
+	top: 25px;
+}
+
+#product-images-alt a {
+	position: absolute;
+	right: 5px;
+	top: 45px;
+}
+
+#product-images-switch a {
+	position: absolute;
+	right: 115px;
+	//top: 95px;
+    color: #A9A9A9;
+	border: 1px solid #DAA520;
+}
+
+/*Diář* /
+
+* {
+    font-family: Segoe UI Light, "Calibri Light", sans-serif;
+}
+
+
+input {
+    min-width: 250px;
+    padding: 8px;
+    border: 1px solid #909090;
+    height: 20px;
+}
+*/
+
+button {
+    padding: 10px 16px;
+    font-weight: 600;
+    background: #2792e0;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: .5s;
+}
+
+button:hover {
+    background: #2954c2;
+}
+
+button:active {
+    background: #204199;
+}
+
+button, input {
+    margin-top: 1rem;
+    outline: none;
+}
+
+.ukol {
+    width: 75%;
+    padding: 2rem;
+    margin: 1rem auto;
+    border: 1px solid #c5c5c5;
+    box-shadow: 2px 2px 4px #b1b1b1;
+}
+
+.zelene {
+    color: green;
+}
+
+.cervene {
+    color: red;
+}
+
+.modre {
+    color: blue;
+}
+.tucne {
+    font-weight: bold;
+}
