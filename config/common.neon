@@ -1,0 +1,61 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+parameters:
+
+# Nastavení aplikace.
+application:
+    errorPresenter: Error # Presenter pro zpracování chyb a výjimek v aplikaci.
+    catchExceptions: true # Vždy směrovat výjimky na ErrorPresenter (standartně jdou na laděnku).
+    mapping:              # Konfigurace vyhledávání cesty k prezenterům.
+        *: App\*Module\Presenters\*Presenter
+
+# Nastavení expirace sessions v rámci celé aplikace.
+session:
+	expiration: 14 days
+
+# Konfigurace databázového připojení v rámci celé aplikace.
+database:
+    dsn: 'mysql:host=127.0.0.1;dbname=redakce_nette' # Typ, adresa a název databáze ...redakce_db
+    user: root # uživatelské jméno
+    password: # heslo
+    options:
+        lazy: yes
+
+# Nastavení služeb v rámci celé aplikace.
+services:
+    router: App\Router\RouterFactory::createRouter # Nastavení služby routeru aplikace.
+    authenticator: App\Model\UserManager    # Nastavení služby pro přihlašování do aplikace.
+    security.authorizator:                  # Nastavení služby pro oprávnění uživatelů aplikace (ACL).
+        setup:
+            # Zdroje aplikace.
+            - addResource(Error)
+            # Pravidla přístupu.
+            - allow(admin) # Administrátor může všechno.
+            - allow(guest, Error)
+
+	# Definice dalších služeb dále přístupných pomocí DI
+    - App\Forms\FormFactory
+    - App\Forms\SignInFormFactory
+    - App\Forms\SignUpFormFactory
+    - App\Forms\BloggalerieFormFactory # Továrnička pro přidávání blogu obrázků.
+    - App\Forms\GalerieFormFactory # Továrnička pro přidávání obrázků.
+    - App\Forms\ReviewFormFactory
+
+# Nastavení společných uživatelských rolí v rámci celé aplikace (ACL).
+security:
+	roles:
+		guest:
+		member: [guest]
+		admin:
+
+# Propojení s dalšími konfiguračními soubory.
+includes:
+    - ../app/CoreModule/config/common.neon # Načtení konfigurace z CoreModule.
+
+# Nastavení výchozích chybových hlášek pro formuláře.
+forms:
+    messages:
+        REQUIRED: 'Povinné pole.'
+        EMAIL: 'Neplatná emailová adresa.'
